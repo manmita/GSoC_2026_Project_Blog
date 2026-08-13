@@ -153,7 +153,7 @@
         ============================== */
 
         .hero {
-            padding: 110px 0 100px;
+            padding: 70px 0 65px;
 
             border-bottom: 1px solid #ddddda;
         }
@@ -171,25 +171,18 @@
         }
 
         .hero h1 {
-            font-size: clamp(52px, 8vw, 92px);
-
-            line-height: 0.98;
-
-            letter-spacing: -4px;
-
-            max-width: 900px;
-
-            margin-bottom: 35px;
+            font-size: clamp(38px, 5vw, 58px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            max-width: 750px;
+            margin-bottom: 25px;
         }
 
         .subtitle {
-            max-width: 720px;
-
-            font-size: 20px;
-
+            max-width: 650px;
+            font-size: 16px;
             color: #555555;
-
-            margin-bottom: 45px;
+            margin-bottom: 30px;
         }
 
         .project-info {
@@ -283,34 +276,25 @@
 
         .mentor-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 20px;
-
-            margin-top: 40px;
+            grid-template-columns: repeat(2, minmax(200px, 320px));
+            gap: 15px;
+            margin-top: 25px;
         }
-
+        
         .mentor-card {
-            padding: 25px;
-
+            padding: 18px 20px;
             border: 1px solid #d3d3cf;
-
             background: #fafaf8;
         }
 
         .mentor-card h3 {
-            font-size: 20px;
-
-            margin-bottom: 5px;
+            font-size: 17px;
+            margin-bottom: 3px;
         }
-
+        
         .mentor-card p {
-            font-size: 14px;
-
+            font-size: 13px;
             margin: 0;
-
             color: #777777;
         }
 
@@ -1277,6 +1261,7 @@
                         <td>
                         <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2886"
                                target="_blank">
+                            !2886
                         </a>
                         </td>
 
@@ -1309,6 +1294,7 @@
                         </td>
                         <td>
                             <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2967">
+                                !2967
                             </a>
                         </td>
 
@@ -1346,15 +1332,20 @@
             Tests & Examples
         </h2>
 
-
         <p>
-
             Tests and examples were developed to validate individual
             Ethernet components as well as complete switched
             Ethernet communication.
-
         </p>
 
+
+        <!-- =========================
+             TESTS
+        ========================== -->
+
+        <h3 class="sub-heading">
+            Tests
+        </h3>
 
         <div class="test-table-wrapper">
 
@@ -1363,26 +1354,19 @@
                 <thead>
 
                     <tr>
-
                         <th>
-                            Test / Example
+                            Test
                         </th>
 
                         <th>
                             Purpose
                         </th>
-
-                        <th>
-                            Status
-                        </th>
-
                     </tr>
 
                 </thead>
 
 
                 <tbody>
-
 
                     <tr>
 
@@ -1391,15 +1375,9 @@
                         </td>
 
                         <td>
-
                             Validates simultaneous transmission
                             and reception over a full-duplex
                             Ethernet link.
-
-                        </td>
-
-                        <td>
-                            Completed
                         </td>
 
                     </tr>
@@ -1412,14 +1390,9 @@
                         </td>
 
                         <td>
-
                             Validates Ethernet inter-frame gap
-                            timing.
-
-                        </td>
-
-                        <td>
-                            Completed
+                            timing between consecutive frame
+                            transmissions.
                         </td>
 
                     </tr>
@@ -1432,14 +1405,9 @@
                         </td>
 
                         <td>
-
                             Validates propagation delay based on
-                            channel properties.
-
-                        </td>
-
-                        <td>
-                            Completed
+                            the configured Ethernet channel
+                            length and propagation speed.
                         </td>
 
                     </tr>
@@ -1448,18 +1416,13 @@
                     <tr>
 
                         <td>
-                            Ethernet Link Speed Example
+                            EthernetLinkSpeedTestCase
                         </td>
 
                         <td>
-
-                            Validates transmission behavior at
-                            different Ethernet link speeds.
-
-                        </td>
-
-                        <td>
-                            Completed
+                            Validates transmission timing for
+                            different Ethernet link speeds and
+                            corresponding frame transmission times.
                         </td>
 
                     </tr>
@@ -1468,22 +1431,42 @@
                     <tr>
 
                         <td>
-                            Switched Ethernet Ping Example
+                            EthernetFlowControlTestCase
                         </td>
 
                         <td>
-
-                            Validates end-to-end connectivity
-                            through the Ethernet switch.
-
-                        </td>
-
-                        <td>
-                            Completed
+                            Validates IEEE 802.3x PAUSE-frame based
+                            flow control and pause/resume behavior.
                         </td>
 
                     </tr>
 
+
+                    <tr>
+
+                        <td>
+                            SwitchLearningTestCase
+                        </td>
+
+                        <td>
+                            Validates MAC address learning and
+                            lookup and flooding.
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            EthernetSwitchQueueLimitTestCase
+                        </td>
+
+                        <td>
+                            Test the additional memory limit that
+                            the switch can be given.
+                        </td>
+
+                    </tr>
 
                 </tbody>
 
@@ -1492,42 +1475,103 @@
         </div>
 
 
+        <!-- =========================
+             EXAMPLES
+        ========================== -->
+
+        <h3 class="sub-heading">
+            Examples
+        </h3>
+
+        <div class="test-table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>
+                            Example
+                        </th>
+
+                        <th>
+                            Purpose
+                        </th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            Ethernet Ping
+                        </td>
+
+                        <td>
+                            Demonstrates basic two-node communication
+                            using EthernetChannel and EthernetNetDevice,
+                            including InternetStackHelper and ICMP ping.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Switched Ethernet Ping
+                        </td>
+
+                        <td>
+                            Demonstrates communication between two
+                            end hosts through an Ethernet switch and
+                            validates MAC learning, flooding and
+                            unicast forwarding.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             EXAMPLE TOPOLOGY
+        ========================== -->
+
         <h3 class="sub-heading">
             Example Topology
         </h3>
 
 
         <p>
-
             A basic switched Ethernet topology consists of two
             hosts connected to separate switch ports. Packets
             generated by one host are transmitted through its
             Ethernet link, received by the switch port, processed
             by the switch and forwarded through the destination
             port.
-
         </p>
 
 
         <div class="code-box">
 
-<pre>
-Host 0
-  |
-  | EthernetChannel
-  |
-Switch Port 0
-  |
-  |-------------------|
-  |  Ethernet Switch  |
-  |-------------------|
-  |
-Switch Port 1
-  |
-  | EthernetChannel
-  |
-Host 1
-</pre>
+        <div class="image-container">
+        
+            <img src="images/example-switch.png"
+                 alt="Switched Ethernet Example">
+        
+            <p class="image-caption">
+                Switched Ethernet Example
+            </p>
+        
+        </div>
 
         </div>
 
@@ -1550,7 +1594,7 @@ Host 1
         </p>
 
         <h2>
-            Future Work
+            Future Enhancements
         </h2>
 
 
@@ -1562,99 +1606,94 @@ Host 1
                 <span>
                     01
                 </span>
-
+            
                 <div>
-
+            
                     <h3>
-                        Additional Scheduling Algorithms
+                        Additional Scheduling Policies
                     </h3>
-
+            
                     <p>
-
-                        Extend the scheduler framework with
-                        additional policies such as Weighted
-                        Round Robin and other queue scheduling
-                        mechanisms.
-
+                        Extend the switch scheduler with additional
+                        scheduling policies such as Weighted Round Robin
+                        (WRR), Priority-based scheduling, and other
+                        queue scheduling mechanisms.
                     </p>
-
+            
                 </div>
-
+            
             </div>
-
-
+            
+            
             <div class="future-item">
-
+            
                 <span>
                     02
                 </span>
-
+            
                 <div>
-
+            
                     <h3>
-                        Expanded Switch Validation
+                        VLAN Support
                     </h3>
-
+            
                     <p>
-
-                        Add more comprehensive tests covering
-                        larger topologies, multiple flows,
-                        congestion and forwarding behavior.
-
+                        Extend the switched Ethernet model to support
+                        Virtual LANs (VLANs), including VLAN tagging,
+                        port-based VLAN configuration and VLAN-aware
+                        frame forwarding.
                     </p>
-
+            
                 </div>
-
+            
             </div>
-
-
+            
+            
             <div class="future-item">
-
+            
                 <span>
                     03
                 </span>
-
+            
                 <div>
-
+            
                     <h3>
-                        Performance Evaluation
+                        Spanning Tree Protocol
                     </h3>
-
+            
                     <p>
-
-                        Evaluate throughput, latency, queue
-                        behavior and scheduler performance
-                        under different traffic conditions.
-
+                        Add support for the Spanning Tree Protocol (STP)
+                        to prevent Layer 2 forwarding loops and enable
+                        more realistic Ethernet switch topologies with
+                        redundant links.
                     </p>
-
+            
                 </div>
-
+            
             </div>
-
-
+            
+            
             <div class="future-item">
-
+            
                 <span>
                     04
                 </span>
-
+            
                 <div>
-
+            
                     <h3>
-                        Further Ethernet Features
+                        Expanded Switch Validation
                     </h3>
-
+            
                     <p>
-
-                        Explore additional Ethernet functionality
-                        that can improve the realism and flexibility
-                        of the model.
-
+                        Add more comprehensive tests covering larger
+                        topologies, multiple flows, congestion, VLANs,
+                        redundant links and different forwarding and
+                        scheduling scenarios.
                     </p>
-
+            
                 </div>
-
+            
             </div>
 
 
@@ -1688,27 +1727,11 @@ Host 1
 
             I would like to thank my mentors for their continuous
             guidance, technical feedback and support throughout
-            the project.
-
-        </p>
-
-
-        <p>
-
-            I am also grateful to the ns-3 community for providing
+            the project. Grateful to the ns-3 community for providing
             an open-source environment in which this work could
-            be developed, discussed and reviewed.
-
-        </p>
-
-
-        <p>
-
-            Finally, I would like to thank Google Summer of Code
-            for providing the opportunity to contribute to an
-            open-source project and gain practical experience
-            working on a real-world networking simulation system.
-
+            be developed, discussed and reviewed and Google Summer of Code
+            for providing the opportunity.
+            
         </p>
 
     </div>
@@ -1734,68 +1757,66 @@ Host 1
             References
         </h2>
 
-
         <ol class="reference-list">
-
+        
             <li>
-
+                <a href="https://ieeexplore.ieee.org/document/30707/"
+                   target="_blank">
+                    Carrier Sense Multiple Access With Collision Detection
+                    (CSMA/CD) Access Method and Physical Layer Specifications,
+                    ANSI/IEEE Std 802.3-1985, 1985,
+                    doi: 10.1109/IEEESTD.1985.82837.
+                </a>
+            </li>
+        
+        
+            <li>
+                <a href="https://tcipg.org/sites/default/files/papers/2010_Jin_Nicol_Caesar.pdf"
+                   target="_blank">
+                    Efficient Gigabit Ethernet Switch Models for Large-scale
+                    Simulation, Dong Jin, David M. Nicol, and Matthew Caesar.
+                </a>
+            </li>
+        
+        
+            <li>
+                <a href="https://ieeexplore.ieee.org/document/9844436"
+                   target="_blank">
+                    IEEE Standard for Ethernet, IEEE Std 802.3-2022
+                    (Revision of IEEE Std 802.3-2018), pp. 1-7025,
+                    29 July 2022,
+                    doi: 10.1109/IEEESTD.2022.9844436.
+                </a>
+            </li>
+        
+        
+            <li>
+                <a href="https://ieeexplore.ieee.org/document/1309630"
+                   target="_blank">
+                    IEEE Standard for Local and Metropolitan Area Networks:
+                    Media Access Control (MAC) Bridges,
+                    IEEE Std 802.1D-2004 (Revision of IEEE Std 802.1D-1998),
+                    pp. 1-281, 9 June 2004,
+                    doi: 10.1109/IEEESTD.2004.94569.
+                </a>
+            </li>
+        
+        
+            <li>
                 <a href="https://www.nsnam.org/"
                    target="_blank">
-
-                    ns-3 Official Website
-
+                    ns-3: Network Simulator 3.
                 </a>
-
             </li>
-
-
+        
+        
             <li>
-
                 <a href="https://www.nsnam.org/docs/"
                    target="_blank">
-
-                    ns-3 Documentation
-
+                    ns-3 Documentation.
                 </a>
-
             </li>
-
-
-            <li>
-
-                <a href="https://www.nsnam.org/docs/models/"
-                   target="_blank">
-
-                    ns-3 Model Library
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a href="https://summerofcode.withgoogle.com/"
-                   target="_blank">
-
-                    Google Summer of Code
-
-                </a>
-
-            </li>
-
-
-            <li>
-
-                <a href="#"
-                   target="_blank">
-
-                    Project Wiki
-
-                </a>
-
-            </li>
-
+        
         </ol>
 
     </div>
