@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -9,10 +10,736 @@
 
     <title>GSoC 2026 - Switched Ethernet in ns-3</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+
+        /* ==============================
+           GLOBAL
+        ============================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f8f8f5;
+            color: #111111;
+
+            line-height: 1.7;
+        }
+
+        a {
+            color: #123f73;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 30px;
+        }
+
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(248, 248, 245, 0.96);
+
+            border-bottom: 1px solid #ddddda;
+
+            backdrop-filter: blur(8px);
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: auto;
+
+            padding: 16px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+
+        /* GSoC logo-style header */
+
+        .gsoc-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            white-space: nowrap;
+        }
+
+        .gsoc-symbol {
+            width: 38px;
+            height: 38px;
+
+            border: 3px solid #111111;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .gsoc-logo strong {
+            display: block;
+
+            font-size: 14px;
+
+            line-height: 1.2;
+        }
+
+        .gsoc-logo small {
+            display: block;
+
+            font-size: 11px;
+
+            color: #666666;
+        }
+
+
+        /* Navigation */
+
+        nav {
+            display: flex;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+
+            justify-content: flex-end;
+        }
+
+        nav a {
+            font-size: 12px;
+
+            font-weight: bold;
+
+            color: #123f73;
+        }
+
+
+        /* ==============================
+           HERO
+        ============================== */
+
+        .hero {
+            padding: 110px 0 100px;
+
+            border-bottom: 1px solid #ddddda;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            color: #666666;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 8vw, 92px);
+
+            line-height: 0.98;
+
+            letter-spacing: -4px;
+
+            max-width: 900px;
+
+            margin-bottom: 35px;
+        }
+
+        .subtitle {
+            max-width: 720px;
+
+            font-size: 20px;
+
+            color: #555555;
+
+            margin-bottom: 45px;
+        }
+
+        .project-info {
+            display: flex;
+
+            gap: 70px;
+
+            flex-wrap: wrap;
+        }
+
+        .project-info div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-info span {
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            color: #777777;
+
+            margin-bottom: 3px;
+        }
+
+        .project-info strong {
+            font-size: 14px;
+        }
+
+
+        /* ==============================
+           SECTIONS
+        ============================== */
+
+        .section {
+            padding: 100px 0;
+
+            border-bottom: 1px solid #ddddda;
+        }
+
+        .alternate {
+            background: #efefeb;
+        }
+
+        .section-label {
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            color: #777777;
+
+            margin-bottom: 15px;
+        }
+
+        .section h2 {
+            font-size: clamp(38px, 5vw, 60px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2.5px;
+
+            margin-bottom: 35px;
+        }
+
+        .section p {
+            max-width: 850px;
+
+            font-size: 16px;
+
+            color: #444444;
+
+            margin-bottom: 20px;
+        }
+
+        .overview-heading {
+            font-size: 25px;
+
+            margin-top: 45px;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* ==============================
+           MENTORS
+        ============================== */
+
+        .mentor-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+            margin-top: 40px;
+        }
+
+        .mentor-card {
+            padding: 25px;
+
+            border: 1px solid #d3d3cf;
+
+            background: #fafaf8;
+        }
+
+        .mentor-card h3 {
+            font-size: 20px;
+
+            margin-bottom: 5px;
+        }
+
+        .mentor-card p {
+            font-size: 14px;
+
+            margin: 0;
+
+            color: #777777;
+        }
+
+
+        /* ==============================
+           OVERVIEW SUMMARY
+        ============================== */
+
+        .overview-summary {
+            margin-top: 45px;
+
+            padding: 30px;
+
+            border-left: 4px solid #123f73;
+
+            background: #eeeeea;
+        }
+
+        .overview-summary h3 {
+            margin-bottom: 10px;
+
+            font-size: 20px;
+        }
+
+        .overview-summary p {
+            margin: 0;
+        }
+
+        .wiki-link {
+            display: inline-block;
+
+            margin-top: 35px;
+
+            padding: 12px 20px;
+
+            border: 1px solid #123f73;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #123f73;
+        }
+
+        .wiki-link:hover {
+            background: #123f73;
+
+            color: white;
+
+            text-decoration: none;
+        }
+
+
+        /* ==============================
+           TIMELINE
+        ============================== */
+
+        .timeline {
+            margin-top: 40px;
+        }
+
+        .timeline-item {
+            display: grid;
+
+            grid-template-columns: 190px 1fr;
+
+            gap: 35px;
+
+            padding: 30px 0;
+
+            border-top: 1px solid #d0d0cc;
+        }
+
+        .timeline-date {
+            font-family: monospace;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #123f73;
+        }
+
+        .timeline-content h3 {
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .timeline-content p {
+            margin: 0;
+
+            font-size: 15px;
+        }
+
+
+        /* ==============================
+           TABLES
+        ============================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+
+            margin-top: 40px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background: #fafaf8;
+
+            border: 1px solid #d4d4d0;
+        }
+
+        th {
+            text-align: left;
+
+            background: #e9e9e5;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+        }
+
+        th,
+        td {
+            padding: 16px;
+
+            border-bottom: 1px solid #d4d4d0;
+
+            vertical-align: top;
+
+            font-size: 14px;
+        }
+
+        td:first-child {
+            width: 55px;
+
+            font-family: monospace;
+        }
+
+        td:last-child {
+            white-space: nowrap;
+        }
+
+        .table-note {
+            font-size: 12px !important;
+
+            color: #777777 !important;
+
+            margin-top: 12px;
+        }
+
+
+        /* ==============================
+           TESTS
+        ============================== */
+
+        .sub-heading {
+            font-size: 25px;
+
+            margin-top: 55px;
+
+            margin-bottom: 15px;
+        }
+
+        .test-table-wrapper {
+            overflow-x: auto;
+
+            margin-top: 35px;
+        }
+
+        .test-table-wrapper table {
+            background: #f8f8f5;
+        }
+
+        .code-box {
+            margin-top: 30px;
+
+            background: #171717;
+
+            color: #eeeeee;
+
+            padding: 30px;
+
+            overflow-x: auto;
+        }
+
+        .code-box pre {
+            font-family: monospace;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ==============================
+           FUTURE WORK
+        ============================== */
+
+        .future-list {
+            margin-top: 40px;
+        }
+
+        .future-item {
+            display: grid;
+
+            grid-template-columns: 60px 1fr;
+
+            gap: 25px;
+
+            padding: 30px 0;
+
+            border-top: 1px solid #d0d0cc;
+        }
+
+        .future-item > span {
+            font-family: monospace;
+
+            color: #123f73;
+
+            font-weight: bold;
+        }
+
+        .future-item h3 {
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .future-item p {
+            margin: 0;
+        }
+
+
+        /* ==============================
+           ACKNOWLEDGEMENTS
+        ============================== */
+
+        #acknowledgements p {
+            max-width: 800px;
+
+            font-size: 17px;
+        }
+
+
+        /* ==============================
+           REFERENCES
+        ============================== */
+
+        .reference-list {
+            margin-top: 30px;
+
+            padding-left: 25px;
+
+            max-width: 850px;
+        }
+
+        .reference-list li {
+            padding: 8px 0;
+
+            font-size: 15px;
+        }
+
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        footer {
+            background: #171717;
+
+            color: white;
+
+            padding: 45px 0;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+
+            margin: auto;
+
+            padding: 0 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        footer strong {
+            display: block;
+
+            margin-bottom: 5px;
+        }
+
+        footer p {
+            margin: 0;
+
+            color: #999999;
+
+            font-size: 13px;
+        }
+
+        footer a {
+            color: #8fb5df;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 850px) {
+
+            .header-container {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            nav {
+                justify-content: flex-start;
+            }
+
+            .hero {
+                padding: 80px 0;
+            }
+
+            .hero h1 {
+                letter-spacing: -3px;
+            }
+
+            .project-info {
+                gap: 30px;
+            }
+
+            .mentor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+
+                gap: 8px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .header-container {
+                padding: 15px 20px;
+            }
+
+            nav {
+                gap: 12px;
+            }
+
+            nav a {
+                font-size: 11px;
+            }
+
+            .hero {
+                padding: 65px 0;
+            }
+
+            .hero h1 {
+                font-size: 50px;
+
+                letter-spacing: -2.5px;
+            }
+
+            .subtitle {
+                font-size: 17px;
+            }
+
+            .section {
+                padding: 70px 0;
+            }
+
+            .section h2 {
+                font-size: 40px;
+            }
+
+            .future-item {
+                grid-template-columns: 1fr;
+
+                gap: 5px;
+            }
+
+            th,
+            td {
+                padding: 12px;
+
+                font-size: 13px;
+            }
+
+            .code-box {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
 
 <!-- =====================================================
      HEADER
@@ -23,20 +750,52 @@
     <div class="header-container">
 
         <div class="gsoc-logo">
-            <span class="gsoc-symbol">G</span>
-            <div>
-                <strong>Google Summer of Code</strong>
-                <small>2026</small>
+
+            <div class="gsoc-symbol">
+                G
             </div>
+
+            <div>
+
+                <strong>
+                    Google Summer of Code
+                </strong>
+
+                <small>
+                    2026
+                </small>
+
+            </div>
+
         </div>
 
+
         <nav>
-            <a href="#overview">Overview</a>
-            <a href="#timeline">Timeline</a>
-            <a href="#merge-requests">Merge Requests</a>
-            <a href="#tests">Tests</a>
-            <a href="#future">Future Work</a>
-            <a href="#references">References</a>
+
+            <a href="#overview">
+                Overview
+            </a>
+
+            <a href="#timeline">
+                Timeline
+            </a>
+
+            <a href="#merge-requests">
+                Merge Requests
+            </a>
+
+            <a href="#tests">
+                Tests
+            </a>
+
+            <a href="#future">
+                Future Work
+            </a>
+
+            <a href="#references">
+                References
+            </a>
+
         </nav>
 
     </div>
@@ -44,8 +803,9 @@
 </header>
 
 
+
 <!-- =====================================================
-     TITLE
+     HERO / TITLE
 ===================================================== -->
 
 <section class="hero">
@@ -62,25 +822,52 @@
         </h1>
 
         <p class="subtitle">
-            A modular full-duplex Ethernet and switched Ethernet
-            model for the ns-3 network simulator.
+
+            Developing a modular full-duplex Ethernet and
+            switched Ethernet model for the ns-3 network
+            simulator.
+
         </p>
+
 
         <div class="project-info">
 
             <div>
-                <span>Contributor</span>
-                <strong>Your Name</strong>
+
+                <span>
+                    Contributor
+                </span>
+
+                <strong>
+                    Your Name
+                </strong>
+
             </div>
 
-            <div>
-                <span>Organization</span>
-                <strong>ns-3</strong>
-            </div>
 
             <div>
-                <span>Project</span>
-                <strong>Switched Ethernet</strong>
+
+                <span>
+                    Organization
+                </span>
+
+                <strong>
+                    ns-3
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Project
+                </span>
+
+                <strong>
+                    Switched Ethernet
+                </strong>
+
             </div>
 
         </div>
@@ -88,6 +875,7 @@
     </div>
 
 </section>
+
 
 
 <main>
@@ -101,15 +889,22 @@
 
     <div class="container">
 
-        <p class="section-label">MENTORS</p>
+        <p class="section-label">
+            MENTORS
+        </p>
 
-        <h2>Project Mentors</h2>
+        <h2>
+            Project Mentors
+        </h2>
+
 
         <div class="mentor-grid">
 
             <div class="mentor-card">
 
-                <h3>Mentor Name</h3>
+                <h3>
+                    Mentor Name
+                </h3>
 
                 <p>
                     Project Mentor
@@ -117,9 +912,12 @@
 
             </div>
 
+
             <div class="mentor-card">
 
-                <h3>Mentor Name</h3>
+                <h3>
+                    Mentor Name
+                </h3>
 
                 <p>
                     Project Mentor
@@ -132,6 +930,7 @@
     </div>
 
 </section>
+
 
 
 <!-- =====================================================
@@ -142,13 +941,17 @@
 
     <div class="container">
 
-        <p class="section-label">01 · OVERVIEW</p>
+        <p class="section-label">
+            01 · OVERVIEW
+        </p>
 
         <h2>
             Project Overview
         </h2>
 
+
         <p>
+
             The goal of this Google Summer of Code project is to
             develop a modular Ethernet and switched Ethernet model
             for the ns-3 network simulator. The implementation is
@@ -156,155 +959,205 @@
             and provide the basic building blocks required to
             construct Ethernet links and multi-port Ethernet
             switches.
+
         </p>
 
+
         <p>
+
             The Ethernet implementation is organized into separate
             components for the channel, NetDevice, MAC and PHY
             layers. This separation allows the individual parts of
             the Ethernet stack to be developed, tested and extended
             independently while keeping their interactions close to
             the behavior of real Ethernet devices.
+
         </p>
+
 
         <h3 class="overview-heading">
-            Ethernet foundation
+            Ethernet Foundation
         </h3>
 
+
         <p>
+
             The <strong>EthernetChannel</strong> models the physical
             link connecting Ethernet devices. It provides configurable
-            link properties such as data rate, cable length and
-            propagation speed. The propagation delay is calculated
-            from the physical length of the channel and the configured
-            propagation speed. The channel is responsible for
-            propagating transmissions between connected devices.
+            properties such as data rate, cable length and propagation
+            speed. The propagation delay is calculated from the physical
+            length of the channel and the configured propagation speed.
+            The channel is responsible for propagating transmissions
+            between connected devices.
+
         </p>
 
-        <p>
-            The <strong>EthernetNetDevice</strong> provides the
-            ns-3 NetDevice interface and acts as the interface between
-            the ns-3 networking stack and the Ethernet implementation.
-            It manages packet transmission and reception and maintains
-            the required queues and transmission state.
-        </p>
 
         <p>
+
+            The <strong>EthernetNetDevice</strong> provides the ns-3
+            NetDevice interface and acts as the interface between the
+            ns-3 networking stack and the Ethernet implementation.
+            It manages packet transmission and reception together with
+            the required transmission and reception queues.
+
+        </p>
+
+
+        <p>
+
             The <strong>EthernetMac</strong> handles Ethernet frame
             processing and MAC-level transmission and reception.
-            The implementation models the required transmission
-            states and the Ethernet inter-frame gap. It also handles
-            Ethernet control frames used for flow control.
+            The implementation models transmission states and the
+            Ethernet inter-frame gap. It also processes Ethernet
+            control frames used for flow control.
+
         </p>
 
+
         <p>
+
             The <strong>EthernetPhy</strong> represents the physical
             layer and coordinates transmission between the MAC and
             EthernetChannel. Transmission timing is derived from
             the configured Ethernet link data rate, while the channel
             provides the propagation behavior.
+
         </p>
+
 
         <h3 class="overview-heading">
             Switched Ethernet
         </h3>
 
+
         <p>
+
             On top of the Ethernet foundation, the project introduces
             a modular Ethernet switch. The switch consists of a
             <strong>Switch</strong> object and multiple
             <strong>SwitchPort</strong> instances. Each switch port
             acts as an Ethernet NetDevice connected to an Ethernet
-            link, allowing hosts to communicate through the switch.
+            link, allowing multiple hosts to communicate through
+            the switch.
+
         </p>
 
+
         <p>
+
             When a frame arrives at a switch port, it is passed to
             the switch for processing. The switch examines the
             Ethernet source and destination MAC addresses. Source
             MAC addresses are learned and associated with the port
             through which they were received. This allows subsequent
-            frames destined for a known address to be forwarded only
+            frames destined for a known address to be forwarded
             through the appropriate switch port.
+
         </p>
 
+
         <p>
+
             If the destination MAC address is not present in the
             forwarding table, the switch floods the frame to the
-            appropriate ports. This provides the initial behavior
-            required for MAC learning and allows the forwarding table
-            to be populated as traffic flows through the network.
+            appropriate ports. As traffic flows through the network,
+            the switch gradually builds its MAC forwarding table.
+
         </p>
 
+
         <h3 class="overview-heading">
-            Packet scheduling
+            Packet Scheduling
         </h3>
 
+
         <p>
+
             The switch uses a scheduler abstraction to separate
             packet scheduling from the core switching logic. This
             makes the scheduling mechanism extensible and allows
             different scheduling policies to be implemented without
             changing the basic forwarding functionality.
+
         </p>
 
+
         <p>
+
             A <strong>First-Come, First-Served (FCFS)</strong>
             scheduler has been implemented as an initial scheduling
             policy. The scheduler tracks transmission state and
             determines when queued packets can be transmitted through
-            the switch ports. The design also provides a foundation
-            for adding additional scheduling algorithms in the future.
+            the switch ports. The design provides a foundation for
+            adding additional scheduling algorithms.
+
         </p>
 
+
         <h3 class="overview-heading">
-            Ethernet flow control
+            Ethernet Flow Control
         </h3>
 
+
         <p>
+
             Full-duplex Ethernet flow control is modeled using
             IEEE 802.3 PAUSE frames. When the receiving side
             experiences queue pressure, a PAUSE control frame can
             be generated to request that the transmitting side
             temporarily stop normal data transmission.
+
         </p>
 
+
         <p>
-            The implementation therefore models the interaction
-            between receive queues, PAUSE frame generation and
-            transmission pause/resume behavior. This provides a
-            foundation for studying congestion and flow-control
-            behavior in switched Ethernet networks.
+
+            The implementation models the interaction between
+            receive queues, PAUSE frame generation and transmission
+            pause/resume behavior, providing a foundation for
+            studying congestion and flow-control behavior in
+            switched Ethernet networks.
+
         </p>
+
 
         <div class="overview-summary">
 
-            <h3>In summary</h3>
+            <h3>
+                In Summary
+            </h3>
 
             <p>
+
                 The project progresses from a basic Ethernet link
                 consisting of an EthernetChannel, EthernetNetDevice,
                 EthernetMac and EthernetPhy to a multi-port switched
                 Ethernet architecture consisting of Switch,
                 SwitchPort, MAC learning and packet scheduling.
-                The resulting design is intended to provide a
-                reusable and extensible foundation for Ethernet
-                network simulations in ns-3.
+                The resulting design provides a reusable and
+                extensible foundation for Ethernet network simulations
+                in ns-3.
+
             </p>
 
         </div>
+
 
         <!-- Replace # with your actual wiki URL -->
 
         <a class="wiki-link"
            href="#"
            target="_blank">
+
             View Project Wiki →
+
         </a>
 
     </div>
 
 </section>
+
 
 
 <!-- =====================================================
@@ -315,13 +1168,17 @@
 
     <div class="container">
 
-        <p class="section-label">02 · TIMELINE</p>
+        <p class="section-label">
+            02 · TIMELINE
+        </p>
 
         <h2>
             Project Timeline
         </h2>
 
+
         <div class="timeline">
+
 
             <div class="timeline-item">
 
@@ -332,13 +1189,16 @@
                 <div class="timeline-content">
 
                     <h3>
-                        Understanding the architecture
+                        Understanding the Architecture
                     </h3>
 
                     <p>
+
                         Studied the existing ns-3 networking
-                        architecture and discussed the requirements
-                        and design of the Ethernet module.
+                        architecture and discussed the requirements,
+                        design decisions and implementation approach
+                        for the Ethernet module.
+
                     </p>
 
                 </div>
@@ -355,14 +1215,16 @@
                 <div class="timeline-content">
 
                     <h3>
-                        Ethernet foundation
+                        Ethernet Foundation
                     </h3>
 
                     <p>
+
                         Developed the EthernetChannel,
                         EthernetNetDevice, EthernetMac and
                         EthernetPhy components and established
                         full-duplex Ethernet communication.
+
                     </p>
 
                 </div>
@@ -379,13 +1241,15 @@
                 <div class="timeline-content">
 
                     <h3>
-                        Ethernet switch
+                        Ethernet Switch
                     </h3>
 
                     <p>
+
                         Implemented the Switch and SwitchPort
                         architecture and connected multiple
                         Ethernet links through a switch.
+
                     </p>
 
                 </div>
@@ -402,13 +1266,15 @@
                 <div class="timeline-content">
 
                     <h3>
-                        MAC learning and scheduling
+                        MAC Learning & Scheduling
                     </h3>
 
                     <p>
+
                         Added MAC address learning, forwarding
                         behavior and the scheduler abstraction
                         with an initial FCFS implementation.
+
                     </p>
 
                 </div>
@@ -425,24 +1291,28 @@
                 <div class="timeline-content">
 
                     <h3>
-                        Testing and validation
+                        Testing & Validation
                     </h3>
 
                     <p>
+
                         Added and executed tests and examples to
                         validate Ethernet links, timing, switching,
                         packet forwarding and end-to-end connectivity.
+
                     </p>
 
                 </div>
 
             </div>
 
+
         </div>
 
     </div>
 
 </section>
+
 
 
 <!-- =====================================================
@@ -453,16 +1323,22 @@
 
     <div class="container">
 
-        <p class="section-label">03 · CONTRIBUTIONS</p>
+        <p class="section-label">
+            03 · CONTRIBUTIONS
+        </p>
 
         <h2>
             Merge Requests
         </h2>
 
+
         <p>
+
             The following merge requests contain the major
             implementation work completed during the project.
+
         </p>
+
 
         <div class="table-wrapper">
 
@@ -471,114 +1347,185 @@
                 <thead>
 
                     <tr>
-                        <th>#</th>
-                        <th>Merge Request</th>
-                        <th>Description</th>
-                        <th>Status</th>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Merge Request
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
                     </tr>
 
                 </thead>
 
+
                 <tbody>
 
+
                     <tr>
-                        <td>01</td>
 
                         <td>
-                            <a href="#" target="_blank">
-                                Ethernet Channel
-                            </a>
+                            01
                         </td>
 
                         <td>
+
+                            <a href="#"
+                               target="_blank">
+
+                                Ethernet Channel
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
                             EthernetChannel implementation and
                             configurable link properties.
+
                         </td>
 
                         <td>
                             Merged
                         </td>
+
                     </tr>
 
 
                     <tr>
-                        <td>02</td>
 
                         <td>
-                            <a href="#" target="_blank">
-                                Ethernet NetDevice
-                            </a>
+                            02
                         </td>
 
                         <td>
+
+                            <a href="#"
+                               target="_blank">
+
+                                Ethernet NetDevice
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
                             Ethernet NetDevice with packet
                             transmission and reception.
+
                         </td>
 
                         <td>
                             Merged
                         </td>
+
                     </tr>
 
 
                     <tr>
-                        <td>03</td>
 
                         <td>
-                            <a href="#" target="_blank">
-                                Ethernet MAC and PHY
-                            </a>
+                            03
                         </td>
 
                         <td>
+
+                            <a href="#"
+                               target="_blank">
+
+                                Ethernet MAC & PHY
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
                             MAC/PHY implementation and Ethernet
                             transmission timing.
+
                         </td>
 
                         <td>
                             Merged
                         </td>
+
                     </tr>
 
 
                     <tr>
-                        <td>04</td>
 
                         <td>
-                            <a href="#" target="_blank">
-                                Switched Ethernet
-                            </a>
+                            04
                         </td>
 
                         <td>
+
+                            <a href="#"
+                               target="_blank">
+
+                                Switched Ethernet
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
                             Switch, SwitchPort and frame
                             forwarding functionality.
+
                         </td>
 
                         <td>
                             Merged
                         </td>
+
                     </tr>
 
 
                     <tr>
-                        <td>05</td>
 
                         <td>
-                            <a href="#" target="_blank">
-                                Scheduling
-                            </a>
+                            05
                         </td>
 
                         <td>
+
+                            <a href="#"
+                               target="_blank">
+
+                                Scheduling
+
+                            </a>
+
+                        </td>
+
+                        <td>
+
                             Scheduler abstraction and FCFS
                             scheduling implementation.
+
                         </td>
 
                         <td>
                             Merged
                         </td>
+
                     </tr>
+
 
                 </tbody>
 
@@ -586,14 +1533,18 @@
 
         </div>
 
+
         <p class="table-note">
-            Replace the links and statuses above with the actual
-            merge request URLs and final status.
+
+            Replace the placeholder links and statuses with the
+            actual merge request URLs and final status.
+
         </p>
 
     </div>
 
 </section>
+
 
 
 <!-- =====================================================
@@ -604,17 +1555,23 @@
 
     <div class="container">
 
-        <p class="section-label">04 · VALIDATION</p>
+        <p class="section-label">
+            04 · VALIDATION
+        </p>
 
         <h2>
             Tests & Examples
         </h2>
 
+
         <p>
+
             Tests and examples were developed to validate individual
             Ethernet components as well as complete switched
             Ethernet communication.
+
         </p>
+
 
         <div class="test-table-wrapper">
 
@@ -623,14 +1580,26 @@
                 <thead>
 
                     <tr>
-                        <th>Test / Example</th>
-                        <th>Purpose</th>
-                        <th>Status</th>
+
+                        <th>
+                            Test / Example
+                        </th>
+
+                        <th>
+                            Purpose
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
                     </tr>
 
                 </thead>
 
+
                 <tbody>
+
 
                     <tr>
 
@@ -639,9 +1608,11 @@
                         </td>
 
                         <td>
+
                             Validates simultaneous transmission
                             and reception over a full-duplex
                             Ethernet link.
+
                         </td>
 
                         <td>
@@ -658,8 +1629,10 @@
                         </td>
 
                         <td>
+
                             Validates Ethernet inter-frame gap
                             timing.
+
                         </td>
 
                         <td>
@@ -676,8 +1649,10 @@
                         </td>
 
                         <td>
+
                             Validates propagation delay based on
                             channel properties.
+
                         </td>
 
                         <td>
@@ -694,8 +1669,10 @@
                         </td>
 
                         <td>
+
                             Validates transmission behavior at
                             different Ethernet link speeds.
+
                         </td>
 
                         <td>
@@ -712,8 +1689,10 @@
                         </td>
 
                         <td>
+
                             Validates end-to-end connectivity
                             through the Ethernet switch.
+
                         </td>
 
                         <td>
@@ -722,28 +1701,34 @@
 
                     </tr>
 
+
                 </tbody>
 
             </table>
 
         </div>
 
+
         <h3 class="sub-heading">
-            Example topology
+            Example Topology
         </h3>
 
+
         <p>
+
             A basic switched Ethernet topology consists of two
             hosts connected to separate switch ports. Packets
             generated by one host are transmitted through its
             Ethernet link, received by the switch port, processed
             by the switch and forwarded through the destination
             port.
+
         </p>
+
 
         <div class="code-box">
 
-            <pre>
+<pre>
 Host 0
   |
   | EthernetChannel
@@ -759,13 +1744,14 @@ Switch Port 1
   | EthernetChannel
   |
 Host 1
-            </pre>
+</pre>
 
         </div>
 
     </div>
 
 </section>
+
 
 
 <!-- =====================================================
@@ -776,29 +1762,37 @@ Host 1
 
     <div class="container">
 
-        <p class="section-label">05 · NEXT STEPS</p>
+        <p class="section-label">
+            05 · NEXT STEPS
+        </p>
 
         <h2>
             Future Work
         </h2>
 
+
         <div class="future-list">
+
 
             <div class="future-item">
 
-                <span>01</span>
+                <span>
+                    01
+                </span>
 
                 <div>
 
                     <h3>
-                        Additional scheduling algorithms
+                        Additional Scheduling Algorithms
                     </h3>
 
                     <p>
+
                         Extend the scheduler framework with
                         additional policies such as Weighted
                         Round Robin and other queue scheduling
                         mechanisms.
+
                     </p>
 
                 </div>
@@ -808,18 +1802,22 @@ Host 1
 
             <div class="future-item">
 
-                <span>02</span>
+                <span>
+                    02
+                </span>
 
                 <div>
 
                     <h3>
-                        Expanded switch validation
+                        Expanded Switch Validation
                     </h3>
 
                     <p>
+
                         Add more comprehensive tests covering
                         larger topologies, multiple flows,
                         congestion and forwarding behavior.
+
                     </p>
 
                 </div>
@@ -829,18 +1827,22 @@ Host 1
 
             <div class="future-item">
 
-                <span>03</span>
+                <span>
+                    03
+                </span>
 
                 <div>
 
                     <h3>
-                        Performance evaluation
+                        Performance Evaluation
                     </h3>
 
                     <p>
+
                         Evaluate throughput, latency, queue
                         behavior and scheduler performance
                         under different traffic conditions.
+
                     </p>
 
                 </div>
@@ -850,23 +1852,28 @@ Host 1
 
             <div class="future-item">
 
-                <span>04</span>
+                <span>
+                    04
+                </span>
 
                 <div>
 
                     <h3>
-                        Further Ethernet features
+                        Further Ethernet Features
                     </h3>
 
                     <p>
+
                         Explore additional Ethernet functionality
                         that can improve the realism and flexibility
                         of the model.
+
                     </p>
 
                 </div>
 
             </div>
+
 
         </div>
 
@@ -875,37 +1882,50 @@ Host 1
 </section>
 
 
+
 <!-- =====================================================
      ACKNOWLEDGEMENTS
 ===================================================== -->
 
-<section class="section alternate" id="acknowledgements">
+<section class="section alternate"
+         id="acknowledgements">
 
     <div class="container">
 
-        <p class="section-label">06 · ACKNOWLEDGEMENTS</p>
+        <p class="section-label">
+            06 · ACKNOWLEDGEMENTS
+        </p>
 
         <h2>
             Acknowledgements
         </h2>
 
+
         <p>
+
             I would like to thank my mentors for their continuous
             guidance, technical feedback and support throughout
             the project.
+
         </p>
 
+
         <p>
+
             I am also grateful to the ns-3 community for providing
             an open-source environment in which this work could
-            be developed and reviewed.
+            be developed, discussed and reviewed.
+
         </p>
 
+
         <p>
+
             Finally, I would like to thank Google Summer of Code
             for providing the opportunity to contribute to an
-            open-source project and gain experience working on a
-            real-world networking simulation system.
+            open-source project and gain practical experience
+            working on a real-world networking simulation system.
+
         </p>
 
     </div>
@@ -913,55 +1933,84 @@ Host 1
 </section>
 
 
+
 <!-- =====================================================
      REFERENCES
 ===================================================== -->
 
-<section class="section" id="references">
+<section class="section"
+         id="references">
 
     <div class="container">
 
-        <p class="section-label">07 · REFERENCES</p>
+        <p class="section-label">
+            07 · REFERENCES
+        </p>
 
         <h2>
             References
         </h2>
 
+
         <ol class="reference-list">
 
             <li>
+
                 <a href="https://www.nsnam.org/"
                    target="_blank">
+
                     ns-3 Official Website
+
                 </a>
+
             </li>
 
+
             <li>
+
                 <a href="https://www.nsnam.org/docs/"
                    target="_blank">
+
                     ns-3 Documentation
+
                 </a>
+
             </li>
 
+
             <li>
+
                 <a href="https://www.nsnam.org/docs/models/"
                    target="_blank">
+
                     ns-3 Model Library
+
                 </a>
+
             </li>
 
+
             <li>
+
                 <a href="https://summerofcode.withgoogle.com/"
                    target="_blank">
+
                     Google Summer of Code
+
                 </a>
+
             </li>
 
+
             <li>
+
                 <a href="#"
                    target="_blank">
+
                     Project Wiki
+
                 </a>
+
             </li>
 
         </ol>
@@ -972,6 +2021,7 @@ Host 1
 
 
 </main>
+
 
 
 <!-- =====================================================
@@ -994,6 +2044,7 @@ Host 1
 
         </div>
 
+
         <a href="#top">
             Back to top ↑
         </a>
@@ -1004,4 +2055,5 @@ Host 1
 
 
 </body>
+
 </html>
