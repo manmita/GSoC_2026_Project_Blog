@@ -84,7 +84,7 @@
         }
 
 
-        /* GSoC logo-style header */
+        /* Google logo */
 
         .gsoc-logo {
             display: flex;
@@ -94,20 +94,11 @@
             white-space: nowrap;
         }
 
-        .gsoc-symbol {
+        .google-logo {
             width: 38px;
             height: 38px;
 
-            border: 3px solid #111111;
-
-            border-radius: 50%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 20px;
-            font-weight: bold;
+            object-fit: contain;
         }
 
         .gsoc-logo strong {
@@ -151,67 +142,63 @@
         /* ==============================
            HERO
         ============================== */
-
+        
         .hero {
             padding: 70px 0 65px;
-
             border-bottom: 1px solid #ddddda;
+            text-align: center;
         }
-
+        
         .eyebrow {
-            font-size: 12px;
-
+            font-size: 11px;
             font-weight: bold;
-
             letter-spacing: 2px;
-
-            color: #666666;
-
-            margin-bottom: 25px;
+            color: #555555;
+            margin-bottom: 20px;
         }
-
+        
         .hero h1 {
-            font-size: clamp(38px, 5vw, 58px);
-            line-height: 1.05;
-            letter-spacing: -2px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(34px, 4vw, 48px);
+            line-height: 1.1;
+            letter-spacing: -1px;
             max-width: 750px;
-            margin-bottom: 25px;
+            margin: 0 auto 20px;
+            color: #1d2630;
         }
-
+        
         .subtitle {
             max-width: 650px;
-            font-size: 16px;
+            margin: 0 auto 30px;
+            font-size: 15px;
             color: #555555;
-            margin-bottom: 30px;
         }
-
+        
         .project-info {
             display: flex;
-
-            gap: 70px;
-
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
             flex-wrap: wrap;
         }
-
+        
         .project-info div {
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
-
+        
         .project-info span {
             font-size: 10px;
-
             text-transform: uppercase;
-
             letter-spacing: 1.5px;
-
             color: #777777;
-
             margin-bottom: 3px;
         }
-
+        
         .project-info strong {
             font-size: 14px;
+            color: #222222;
         }
 
 
@@ -220,7 +207,7 @@
         ============================== */
 
         .section {
-            padding: 100px 0;
+            padding: 80px 0;
 
             border-bottom: 1px solid #ddddda;
         }
@@ -238,17 +225,26 @@
 
             color: #777777;
 
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
+        /*
+           Main section headings
+           Smaller + different font + dark color
+        */
+
         .section h2 {
-            font-size: clamp(38px, 5vw, 60px);
+            font-family: Georgia, "Times New Roman", serif;
 
-            line-height: 1.05;
+            font-size: clamp(30px, 3.5vw, 42px);
 
-            letter-spacing: -2.5px;
+            line-height: 1.15;
 
-            margin-bottom: 35px;
+            letter-spacing: -0.5px;
+
+            color: #1f2933;
+
+            margin-bottom: 30px;
         }
 
         .section p {
@@ -262,40 +258,15 @@
         }
 
         .overview-heading {
-            font-size: 25px;
+            font-family: Georgia, "Times New Roman", serif;
 
-            margin-top: 45px;
+            font-size: 21px;
 
-            margin-bottom: 15px;
-        }
+            color: #263238;
 
+            margin-top: 40px;
 
-        /* ==============================
-           MENTORS
-        ============================== */
-
-        .mentor-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(200px, 320px));
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        .mentor-card {
-            padding: 18px 20px;
-            border: 1px solid #d3d3cf;
-            background: #fafaf8;
-        }
-
-        .mentor-card h3 {
-            font-size: 17px;
-            margin-bottom: 3px;
-        }
-        
-        .mentor-card p {
-            font-size: 13px;
-            margin: 0;
-            color: #777777;
+            margin-bottom: 12px;
         }
 
 
@@ -314,9 +285,13 @@
         }
 
         .overview-summary h3 {
+            font-family: Georgia, "Times New Roman", serif;
+
             margin-bottom: 10px;
 
-            font-size: 20px;
+            font-size: 18px;
+
+            color: #1f2933;
         }
 
         .overview-summary p {
@@ -379,7 +354,11 @@
         }
 
         .timeline-content h3 {
-            font-size: 22px;
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 19px;
+
+            color: #263238;
 
             margin-bottom: 8px;
         }
@@ -409,6 +388,8 @@
             background: #fafaf8;
 
             border: 1px solid #d4d4d0;
+
+            table-layout: fixed;
         }
 
         th {
@@ -421,6 +402,8 @@
             text-transform: uppercase;
 
             letter-spacing: 0.8px;
+
+            color: #263238;
         }
 
         th,
@@ -432,24 +415,40 @@
             vertical-align: top;
 
             font-size: 14px;
+
+            word-wrap: break-word;
         }
 
-        td:first-child {
-            width: 55px;
+        /* Merge Request */
 
-            font-family: monospace;
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 32%;
         }
 
-        td:last-child {
+        /* Description */
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 38%;
+        }
+
+        /* Link */
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 10%;
+
             white-space: nowrap;
         }
 
-        .table-note {
-            font-size: 12px !important;
+        /* Status */
 
-            color: #777777 !important;
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 20%;
 
-            margin-top: 12px;
+            white-space: nowrap;
         }
 
 
@@ -458,9 +457,13 @@
         ============================== */
 
         .sub-heading {
-            font-size: 25px;
+            font-family: Georgia, "Times New Roman", serif;
 
-            margin-top: 55px;
+            font-size: 21px;
+
+            color: #263238;
+
+            margin-top: 50px;
 
             margin-bottom: 15px;
         }
@@ -495,6 +498,28 @@
             line-height: 1.5;
         }
 
+        .image-container {
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+
+            height: auto;
+
+            display: block;
+
+            margin: auto;
+        }
+
+        .image-caption {
+            margin-top: 10px;
+
+            color: #bbbbbb !important;
+
+            font-size: 13px !important;
+        }
+
 
         /* ==============================
            FUTURE WORK
@@ -525,7 +550,11 @@
         }
 
         .future-item h3 {
-            font-size: 22px;
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 19px;
+
+            color: #263238;
 
             margin-bottom: 8px;
         }
@@ -629,19 +658,11 @@
             }
 
             .hero {
-                padding: 80px 0;
-            }
-
-            .hero h1 {
-                letter-spacing: -3px;
+                padding: 70px 0;
             }
 
             .project-info {
                 gap: 30px;
-            }
-
-            .mentor-grid {
-                grid-template-columns: 1fr;
             }
 
             .timeline-item {
@@ -677,25 +698,25 @@
             }
 
             .hero {
-                padding: 65px 0;
+                padding: 60px 0;
             }
 
             .hero h1 {
-                font-size: 50px;
+                font-size: 38px;
 
-                letter-spacing: -2.5px;
+                letter-spacing: -1px;
             }
 
             .subtitle {
-                font-size: 17px;
+                font-size: 16px;
             }
 
             .section {
-                padding: 70px 0;
+                padding: 60px 0;
             }
 
             .section h2 {
-                font-size: 40px;
+                font-size: 32px;
             }
 
             .future-item {
@@ -722,7 +743,7 @@
 </head>
 
 
-<body>
+<body id="top">
 
 
 <!-- =====================================================
@@ -735,9 +756,12 @@
 
         <div class="gsoc-logo">
 
-            <div class="gsoc-symbol">
-                G
-            </div>
+            <!-- Replace google-logo.png with your Google logo image -->
+
+            <img
+                src="images/google-logo.png"
+                alt="Google"
+                class="google-logo">
 
             <div>
 
@@ -769,7 +793,7 @@
             </a>
 
             <a href="#tests">
-                Tests&Examples
+                Tests & Examples
             </a>
 
             <a href="#future">
@@ -832,6 +856,20 @@
             <div>
 
                 <span>
+                    Mentors
+                </span>
+
+                <strong>
+                    Tommaso Pecorella<br>
+                    Alberto Gallegos Ramonet
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
                     Organization
                 </span>
 
@@ -866,58 +904,6 @@
 
 
 <!-- =====================================================
-     MENTORS
-===================================================== -->
-
-<section class="section" id="mentors">
-
-    <div class="container">
-
-        <p class="section-label">
-            MENTORS
-        </p>
-
-        <h2>
-            Project Mentors
-        </h2>
-
-
-        <div class="mentor-grid">
-
-            <div class="mentor-card">
-
-                <h3>
-                    Tommaso Pecorella
-                </h3>
-
-                <p>
-                    Project Mentor
-                </p>
-
-            </div>
-
-
-            <div class="mentor-card">
-
-                <h3>
-                    Alberto Gallegos Ramonet
-                </h3>
-
-                <p>
-                    Project Mentor
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
      OVERVIEW
 ===================================================== -->
 
@@ -940,7 +926,7 @@
             develop a modular Switched Ethernet model capable of
             simulating 1, 10, and 40 GbE links, with MAC-based
             auto-learning of I/O ports, support for pluggable
-            scheduling algorithms.introduce enhanced EthernetNetDevice
+            scheduling algorithms. Introduce enhanced EthernetNetDevice
             model with point-to-point–like NetDevice abstraction for
             switched Ethernet, an EthernetChannel capable of simulating
             full-duplex mode of operation responsible for modeling
@@ -1017,7 +1003,7 @@
             <strong>SwitchPort</strong> instances allowing multiple
             hosts to communicate through the switch.
             Supports MAC Address Learning and Forwarding,
-            supports different scheduling policies
+            supports different scheduling policies.
 
         </p>
 
@@ -1042,9 +1028,11 @@
 
         </div>
 
+
         <a class="wiki-link"
            href="https://www.nsnam.org/wiki/GSOC2026SwitchedEthernet"
-           target="_blank">
+           target="_blank"
+           rel="noopener noreferrer">
 
             View Project Wiki →
 
@@ -1122,7 +1110,7 @@
                         Ethernet Ping example for configuration and connectivity testing.
                         Implemented IEEE 802.3x PAUSE-based flow control and MAC control
                         frame feature. Added tests for full-duplex communication, link speed,
-                        ifg and flow control along with PCAP tracing for the Ethernet Ping
+                        IFG and flow control along with PCAP tracing for the Ethernet Ping
                         example.
 
                     </p>
@@ -1151,7 +1139,7 @@
                         & lookup, forwarding, along with SwitchHelper and switched Ethernet Ping
                         example for validation. Implemented a shared switch buffer and modular Switch
                         Scheduler framework with FCFS scheduling, added tests for switch.
-                        Refactored queue management from EthernetNetDevice to EthernetMac
+                        Refactored queue management from EthernetNetDevice to EthernetMac.
 
                     </p>
 
@@ -1209,12 +1197,9 @@
             Merge Requests
         </h2>
 
-
         <p>
-
             The following merge requests contain the major
             implementation work completed during the project.
-
         </p>
 
 
@@ -1235,7 +1220,7 @@
                         </th>
 
                         <th>
-                            link
+                            Link
                         </th>
 
                         <th>
@@ -1249,27 +1234,31 @@
 
                 <tbody>
 
+                    <!-- MR 1 -->
 
                     <tr>
 
                         <td>
-
-                            MR 1: ethernet: (GSoC26) Add EthernetChannel and EthernetNetDevice
-
+                            <strong>
+                                MR 1:
+                            </strong>
+                            ethernet: (GSoC26) Add EthernetChannel
+                            and EthernetNetDevice
                         </td>
 
                         <td>
-                        <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2886"
-                               target="_blank">
-                            !2886
-                        </a>
+                            The Ethernet foundation including
+                            EthernetChannel, EthernetNetDevice,
+                            EthernetPHY and EthernetMAC, along
+                            with related unit tests and examples.
                         </td>
 
                         <td>
-
-                            The Ethernet foundation including EthernetChannel, EthernetNetDevice, EthernetPHY,
-                            EthernetMAC in ethernet modules and related unit tests & exxample.
-
+                            <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2886"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                !2886
+                            </a>
                         </td>
 
                         <td>
@@ -1279,21 +1268,25 @@
                     </tr>
 
 
+                    <!-- MR 2 -->
+
                     <tr>
 
                         <td>
-
-                            ethernet: (GSoC26) Add Switched Ethernet with pluggable scheduler
-
+                            ethernet: (GSoC26) Add Switched Ethernet
+                            with pluggable scheduler
                         </td>
 
                         <td>
-
-                           The Switched Ethernet model alongwith SwitchPort, Switch Scheduler and FCFS scheduling policy.
-
+                            The Switched Ethernet model along with
+                            SwitchPort, Switch Scheduler and the
+                            FCFS scheduling policy.
                         </td>
+
                         <td>
-                            <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2967">
+                            <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2967"
+                               target="_blank"
+                               rel="noopener noreferrer">
                                 !2967
                             </a>
                         </td>
@@ -1339,9 +1332,7 @@
         </p>
 
 
-        <!-- =========================
-             TESTS
-        ========================== -->
+        <!-- TESTS -->
 
         <h3 class="sub-heading">
             Tests
@@ -1354,6 +1345,7 @@
                 <thead>
 
                     <tr>
+
                         <th>
                             Test
                         </th>
@@ -1361,6 +1353,7 @@
                         <th>
                             Purpose
                         </th>
+
                     </tr>
 
                 </thead>
@@ -1455,6 +1448,7 @@
 
                     </tr>
 
+
                     <tr>
 
                         <td>
@@ -1462,7 +1456,7 @@
                         </td>
 
                         <td>
-                            Test the additional memory limit that
+                            Tests the additional memory limit that
                             the switch can be given.
                         </td>
 
@@ -1475,9 +1469,7 @@
         </div>
 
 
-        <!-- =========================
-             EXAMPLES
-        ========================== -->
+        <!-- EXAMPLES -->
 
         <h3 class="sub-heading">
             Examples
@@ -1490,6 +1482,7 @@
                 <thead>
 
                     <tr>
+
                         <th>
                             Example
                         </th>
@@ -1497,6 +1490,7 @@
                         <th>
                             Purpose
                         </th>
+
                     </tr>
 
                 </thead>
@@ -1541,9 +1535,7 @@
         </div>
 
 
-        <!-- =========================
-             EXAMPLE TOPOLOGY
-        ========================== -->
+        <!-- EXAMPLE TOPOLOGY -->
 
         <h3 class="sub-heading">
             Example Topology
@@ -1551,27 +1543,29 @@
 
 
         <p>
+
             A basic switched Ethernet topology consists of two
             hosts connected to separate switch ports. Packets
             generated by one host are transmitted through its
             Ethernet link, received by the switch port, processed
             by the switch and forwarded through the destination
             port.
+
         </p>
 
 
         <div class="code-box">
 
-        <div class="image-container">
-        
-            <img src="images/example-switch.png"
-                 alt="Switched Ethernet Example">
-        
-            <p class="image-caption">
-                Switched Ethernet Example
-            </p>
-        
-        </div>
+            <div class="image-container">
+
+                <img src="images/example-switch.png"
+                     alt="Switched Ethernet Example">
+
+                <p class="image-caption">
+                    Switched Ethernet Example
+                </p>
+
+            </div>
 
         </div>
 
@@ -1606,94 +1600,94 @@
                 <span>
                     01
                 </span>
-            
+
                 <div>
-            
+
                     <h3>
                         Additional Scheduling Policies
                     </h3>
-            
+
                     <p>
                         Extend the switch scheduler with additional
                         scheduling policies such as Weighted Round Robin
                         (WRR), Priority-based scheduling, and other
                         queue scheduling mechanisms.
                     </p>
-            
+
                 </div>
-            
+
             </div>
-            
-            
+
+
             <div class="future-item">
-            
+
                 <span>
                     02
                 </span>
-            
+
                 <div>
-            
+
                     <h3>
                         VLAN Support
                     </h3>
-            
+
                     <p>
                         Extend the switched Ethernet model to support
                         Virtual LANs (VLANs), including VLAN tagging,
                         port-based VLAN configuration and VLAN-aware
                         frame forwarding.
                     </p>
-            
+
                 </div>
-            
+
             </div>
-            
-            
+
+
             <div class="future-item">
-            
+
                 <span>
                     03
                 </span>
-            
+
                 <div>
-            
+
                     <h3>
                         Spanning Tree Protocol
                     </h3>
-            
+
                     <p>
                         Add support for the Spanning Tree Protocol (STP)
                         to prevent Layer 2 forwarding loops and enable
                         more realistic Ethernet switch topologies with
                         redundant links.
                     </p>
-            
+
                 </div>
-            
+
             </div>
-            
-            
+
+
             <div class="future-item">
-            
+
                 <span>
                     04
                 </span>
-            
+
                 <div>
-            
+
                     <h3>
                         Expanded Switch Validation
                     </h3>
-            
+
                     <p>
                         Add more comprehensive tests covering larger
                         topologies, multiple flows, congestion, VLANs,
                         redundant links and different forwarding and
                         scheduling scenarios.
                     </p>
-            
+
                 </div>
-            
+
             </div>
 
 
@@ -1731,7 +1725,7 @@
             an open-source environment in which this work could
             be developed, discussed and reviewed and Google Summer of Code
             for providing the opportunity.
-            
+
         </p>
 
     </div>
@@ -1758,65 +1752,83 @@
         </h2>
 
         <ol class="reference-list">
-        
+
             <li>
                 <a href="https://ieeexplore.ieee.org/document/30707/"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
+
                     Carrier Sense Multiple Access With Collision Detection
                     (CSMA/CD) Access Method and Physical Layer Specifications,
                     ANSI/IEEE Std 802.3-1985, 1985,
                     doi: 10.1109/IEEESTD.1985.82837.
+
                 </a>
             </li>
-        
-        
+
+
             <li>
                 <a href="https://tcipg.org/sites/default/files/papers/2010_Jin_Nicol_Caesar.pdf"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
+
                     Efficient Gigabit Ethernet Switch Models for Large-scale
                     Simulation, Dong Jin, David M. Nicol, and Matthew Caesar.
+
                 </a>
             </li>
-        
-        
+
+
             <li>
                 <a href="https://ieeexplore.ieee.org/document/9844436"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
+
                     IEEE Standard for Ethernet, IEEE Std 802.3-2022
                     (Revision of IEEE Std 802.3-2018), pp. 1-7025,
                     29 July 2022,
                     doi: 10.1109/IEEESTD.2022.9844436.
+
                 </a>
             </li>
-        
-        
+
+
             <li>
                 <a href="https://ieeexplore.ieee.org/document/1309630"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
+
                     IEEE Standard for Local and Metropolitan Area Networks:
                     Media Access Control (MAC) Bridges,
                     IEEE Std 802.1D-2004 (Revision of IEEE Std 802.1D-1998),
                     pp. 1-281, 9 June 2004,
                     doi: 10.1109/IEEESTD.2004.94569.
+
                 </a>
             </li>
-        
-        
+
+
             <li>
                 <a href="https://www.nsnam.org/"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
+
                     ns-3: Network Simulator 3.
+
                 </a>
             </li>
-        
-        
+
+
             <li>
                 <a href="https://www.nsnam.org/docs/"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
+
                     ns-3 Documentation.
+
                 </a>
             </li>
-        
+
         </ol>
 
     </div>
