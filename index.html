@@ -758,7 +758,7 @@
             <div>
 
                 <strong>
-                    Google Summer of Code
+                    Google Summer of Code 2026
                 </strong>
 
                 <small>
@@ -785,11 +785,11 @@
             </a>
 
             <a href="#tests">
-                Tests
+                Tests&Examples
             </a>
 
             <a href="#future">
-                Future Work
+                Future Enhancements
             </a>
 
             <a href="#references">
@@ -813,7 +813,7 @@
     <div class="container">
 
         <p class="eyebrow">
-            GOOGLE SUMMER OF CODE · 2026
+            GOOGLE SUMMER OF CODE 2026
         </p>
 
         <h1>
@@ -839,7 +839,7 @@
                 </span>
 
                 <strong>
-                    Your Name
+                    Manmita Das
                 </strong>
 
             </div>
@@ -903,7 +903,7 @@
             <div class="mentor-card">
 
                 <h3>
-                    Mentor Name
+                    Tommaso Pecorella
                 </h3>
 
                 <p>
@@ -916,7 +916,7 @@
             <div class="mentor-card">
 
                 <h3>
-                    Mentor Name
+                    Alberto Gallegos Ramonet
                 </h3>
 
                 <p>
@@ -953,12 +953,14 @@
         <p>
 
             The goal of this Google Summer of Code project is to
-            develop a modular Ethernet and switched Ethernet model
-            for the ns-3 network simulator. The implementation is
-            designed to model modern full-duplex Ethernet networks
-            and provide the basic building blocks required to
-            construct Ethernet links and multi-port Ethernet
-            switches.
+            develop a modular Switched Ethernet model capable of
+            simulating 1, 10, and 40 GbE links, with MAC-based
+            auto-learning of I/O ports, support for pluggable
+            scheduling algorithms.introduce enhanced EthernetNetDevice
+            model with point-to-point–like NetDevice abstraction for
+            switched Ethernet, an EthernetChannel capable of simulating
+            full-duplex mode of operation responsible for modeling
+            transmission delay and errors.
 
         </p>
 
@@ -984,11 +986,9 @@
 
             The <strong>EthernetChannel</strong> models the physical
             link connecting Ethernet devices. It provides configurable
-            properties such as data rate, cable length and propagation
-            speed. The propagation delay is calculated from the physical
-            length of the channel and the configured propagation speed.
-            The channel is responsible for propagating transmissions
-            between connected devices.
+            properties such as cable length and propagation speed.
+            The channel is responsible for propagation between connected
+            devices.
 
         </p>
 
@@ -998,8 +998,6 @@
             The <strong>EthernetNetDevice</strong> provides the ns-3
             NetDevice interface and acts as the interface between the
             ns-3 networking stack and the Ethernet implementation.
-            It manages packet transmission and reception together with
-            the required transmission and reception queues.
 
         </p>
 
@@ -1008,9 +1006,7 @@
 
             The <strong>EthernetMac</strong> handles Ethernet frame
             processing and MAC-level transmission and reception.
-            The implementation models transmission states and the
-            Ethernet inter-frame gap. It also processes Ethernet
-            control frames used for flow control.
+            Supports Flow Control for Full-duplex.
 
         </p>
 
@@ -1019,9 +1015,7 @@
 
             The <strong>EthernetPhy</strong> represents the physical
             layer and coordinates transmission between the MAC and
-            EthernetChannel. Transmission timing is derived from
-            the configured Ethernet link data rate, while the channel
-            provides the propagation behavior.
+            EthernetChannel.
 
         </p>
 
@@ -1036,90 +1030,13 @@
             On top of the Ethernet foundation, the project introduces
             a modular Ethernet switch. The switch consists of a
             <strong>Switch</strong> object and multiple
-            <strong>SwitchPort</strong> instances. Each switch port
-            acts as an Ethernet NetDevice connected to an Ethernet
-            link, allowing multiple hosts to communicate through
-            the switch.
+            <strong>SwitchPort</strong> instances allowing multiple
+            hosts to communicate through the switch.
+            Supports MAC Address Learning and Forwarding,
+            supports different scheduling policies
 
         </p>
 
-
-        <p>
-
-            When a frame arrives at a switch port, it is passed to
-            the switch for processing. The switch examines the
-            Ethernet source and destination MAC addresses. Source
-            MAC addresses are learned and associated with the port
-            through which they were received. This allows subsequent
-            frames destined for a known address to be forwarded
-            through the appropriate switch port.
-
-        </p>
-
-
-        <p>
-
-            If the destination MAC address is not present in the
-            forwarding table, the switch floods the frame to the
-            appropriate ports. As traffic flows through the network,
-            the switch gradually builds its MAC forwarding table.
-
-        </p>
-
-
-        <h3 class="overview-heading">
-            Packet Scheduling
-        </h3>
-
-
-        <p>
-
-            The switch uses a scheduler abstraction to separate
-            packet scheduling from the core switching logic. This
-            makes the scheduling mechanism extensible and allows
-            different scheduling policies to be implemented without
-            changing the basic forwarding functionality.
-
-        </p>
-
-
-        <p>
-
-            A <strong>First-Come, First-Served (FCFS)</strong>
-            scheduler has been implemented as an initial scheduling
-            policy. The scheduler tracks transmission state and
-            determines when queued packets can be transmitted through
-            the switch ports. The design provides a foundation for
-            adding additional scheduling algorithms.
-
-        </p>
-
-
-        <h3 class="overview-heading">
-            Ethernet Flow Control
-        </h3>
-
-
-        <p>
-
-            Full-duplex Ethernet flow control is modeled using
-            IEEE 802.3 PAUSE frames. When the receiving side
-            experiences queue pressure, a PAUSE control frame can
-            be generated to request that the transmitting side
-            temporarily stop normal data transmission.
-
-        </p>
-
-
-        <p>
-
-            The implementation models the interaction between
-            receive queues, PAUSE frame generation and transmission
-            pause/resume behavior, providing a foundation for
-            studying congestion and flow-control behavior in
-            switched Ethernet networks.
-
-        </p>
 
 
         <div class="overview-summary">
@@ -1133,21 +1050,16 @@
                 The project progresses from a basic Ethernet link
                 consisting of an EthernetChannel, EthernetNetDevice,
                 EthernetMac and EthernetPhy to a multi-port switched
-                Ethernet architecture consisting of Switch,
-                SwitchPort, MAC learning and packet scheduling.
-                The resulting design provides a reusable and
-                extensible foundation for Ethernet network simulations
-                in ns-3.
+                Ethernet architecture. The resulting design provides a
+                reusable and extensible foundation for Ethernet network
+                simulations in ns-3.
 
             </p>
 
         </div>
 
-
-        <!-- Replace # with your actual wiki URL -->
-
         <a class="wiki-link"
-           href="#"
+           href="https://www.nsnam.org/wiki/GSOC2026SwitchedEthernet"
            target="_blank">
 
             View Project Wiki →
@@ -1220,10 +1132,14 @@
 
                     <p>
 
-                        Developed the EthernetChannel,
-                        EthernetNetDevice, EthernetMac and
-                        EthernetPhy components and established
-                        full-duplex Ethernet communication.
+                        Developed the core full-duplex Ethernet model by implementing
+                        EthernetChannel and EthernetNetDevice, followed by separation of
+                        the Ethernet MAC and PHY layers. Added EthernetHelper and an
+                        Ethernet Ping example for configuration and connectivity testing.
+                        Implemented IEEE 802.3x PAUSE-based flow control and MAC control
+                        frame feature. Added tests for full-duplex communication, link speed,
+                        ifg and flow control along with PCAP tracing for the Ethernet Ping
+                        example.
 
                     </p>
 
@@ -1246,34 +1162,12 @@
 
                     <p>
 
-                        Implemented the Switch and SwitchPort
-                        architecture and connected multiple
-                        Ethernet links through a switch.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="timeline-item">
-
-                <div class="timeline-date">
-                    Phase 3
-                </div>
-
-                <div class="timeline-content">
-
-                    <h3>
-                        MAC Learning & Scheduling
-                    </h3>
-
-                    <p>
-
-                        Added MAC address learning, forwarding
-                        behavior and the scheduler abstraction
-                        with an initial FCFS implementation.
+                        Extended the Ethernet model into a modular switched Ethernet architecture
+                        followed by implementation of the Switch and SwitchPort. Added MAC learning
+                        & lookup, forwarding, along with SwitchHelper and switched Ethernet Ping
+                        example for validation. Implemented a shared switch buffer and modular Switch
+                        Scheduler framework with FCFS scheduling, added tests for switch.
+                        Refactored queue management from EthernetNetDevice to EthernetMac
 
                     </p>
 
@@ -1349,15 +1243,15 @@
                     <tr>
 
                         <th>
-                            #
-                        </th>
-
-                        <th>
                             Merge Request
                         </th>
 
                         <th>
                             Description
+                        </th>
+
+                        <th>
+                            link
                         </th>
 
                         <th>
@@ -1375,29 +1269,26 @@
                     <tr>
 
                         <td>
-                            01
+
+                            MR 1: ethernet: (GSoC26) Add EthernetChannel and EthernetNetDevice
+
                         </td>
 
                         <td>
-
-                            <a href="#"
+                        <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2886"
                                target="_blank">
-
-                                Ethernet Channel
-
-                            </a>
-
+                        </a>
                         </td>
 
                         <td>
 
-                            EthernetChannel implementation and
-                            configurable link properties.
+                            The Ethernet foundation including EthernetChannel, EthernetNetDevice, EthernetPHY,
+                            EthernetMAC in ethernet modules and related unit tests & exxample.
 
                         </td>
 
                         <td>
-                            Merged
+                            Under Review
                         </td>
 
                     </tr>
@@ -1406,140 +1297,32 @@
                     <tr>
 
                         <td>
-                            02
+
+                            ethernet: (GSoC26) Add Switched Ethernet with pluggable scheduler
+
                         </td>
 
                         <td>
 
-                            <a href="#"
-                               target="_blank">
+                           The Switched Ethernet model alongwith SwitchPort, Switch Scheduler and FCFS scheduling policy.
 
-                                Ethernet NetDevice
-
+                        </td>
+                        <td>
+                            <a href="https://gitlab.com/nsnam/ns-3-dev/-/merge_requests/2967">
                             </a>
-
                         </td>
 
                         <td>
-
-                            Ethernet NetDevice with packet
-                            transmission and reception.
-
-                        </td>
-
-                        <td>
-                            Merged
+                            Under Review
                         </td>
 
                     </tr>
-
-
-                    <tr>
-
-                        <td>
-                            03
-                        </td>
-
-                        <td>
-
-                            <a href="#"
-                               target="_blank">
-
-                                Ethernet MAC & PHY
-
-                            </a>
-
-                        </td>
-
-                        <td>
-
-                            MAC/PHY implementation and Ethernet
-                            transmission timing.
-
-                        </td>
-
-                        <td>
-                            Merged
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            04
-                        </td>
-
-                        <td>
-
-                            <a href="#"
-                               target="_blank">
-
-                                Switched Ethernet
-
-                            </a>
-
-                        </td>
-
-                        <td>
-
-                            Switch, SwitchPort and frame
-                            forwarding functionality.
-
-                        </td>
-
-                        <td>
-                            Merged
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
-                            05
-                        </td>
-
-                        <td>
-
-                            <a href="#"
-                               target="_blank">
-
-                                Scheduling
-
-                            </a>
-
-                        </td>
-
-                        <td>
-
-                            Scheduler abstraction and FCFS
-                            scheduling implementation.
-
-                        </td>
-
-                        <td>
-                            Merged
-                        </td>
-
-                    </tr>
-
 
                 </tbody>
 
             </table>
 
         </div>
-
-
-        <p class="table-note">
-
-            Replace the placeholder links and statuses with the
-            actual merge request URLs and final status.
-
-        </p>
 
     </div>
 
