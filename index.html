@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>GSoC 2026 - Switched Ethernet in ns-3</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="site-header">
+
+    <div class="header-container">
+
+        <div class="gsoc-logo">
+            <span class="gsoc-symbol">G</span>
+            <div>
+                <strong>Google Summer of Code</strong>
+                <small>2026</small>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#overview">Overview</a>
+            <a href="#timeline">Timeline</a>
+            <a href="#merge-requests">Merge Requests</a>
+            <a href="#tests">Tests</a>
+            <a href="#future">Future Work</a>
+            <a href="#references">References</a>
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     TITLE
+===================================================== -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <p class="eyebrow">
+            GOOGLE SUMMER OF CODE · 2026
+        </p>
+
+        <h1>
+            Switched Ethernet<br>
+            in ns-3
+        </h1>
+
+        <p class="subtitle">
+            A modular full-duplex Ethernet and switched Ethernet
+            model for the ns-3 network simulator.
+        </p>
+
+        <div class="project-info">
+
+            <div>
+                <span>Contributor</span>
+                <strong>Your Name</strong>
+            </div>
+
+            <div>
+                <span>Organization</span>
+                <strong>ns-3</strong>
+            </div>
+
+            <div>
+                <span>Project</span>
+                <strong>Switched Ethernet</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<main>
+
+
+<!-- =====================================================
+     MENTORS
+===================================================== -->
+
+<section class="section" id="mentors">
+
+    <div class="container">
+
+        <p class="section-label">MENTORS</p>
+
+        <h2>Project Mentors</h2>
+
+        <div class="mentor-grid">
+
+            <div class="mentor-card">
+
+                <h3>Mentor Name</h3>
+
+                <p>
+                    Project Mentor
+                </p>
+
+            </div>
+
+            <div class="mentor-card">
+
+                <h3>Mentor Name</h3>
+
+                <p>
+                    Project Mentor
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     OVERVIEW
+===================================================== -->
+
+<section class="section" id="overview">
+
+    <div class="container">
+
+        <p class="section-label">01 · OVERVIEW</p>
+
+        <h2>
+            Project Overview
+        </h2>
+
+        <p>
+            The goal of this Google Summer of Code project is to
+            develop a modular Ethernet and switched Ethernet model
+            for the ns-3 network simulator. The implementation is
+            designed to model modern full-duplex Ethernet networks
+            and provide the basic building blocks required to
+            construct Ethernet links and multi-port Ethernet
+            switches.
+        </p>
+
+        <p>
+            The Ethernet implementation is organized into separate
+            components for the channel, NetDevice, MAC and PHY
+            layers. This separation allows the individual parts of
+            the Ethernet stack to be developed, tested and extended
+            independently while keeping their interactions close to
+            the behavior of real Ethernet devices.
+        </p>
+
+        <h3 class="overview-heading">
+            Ethernet foundation
+        </h3>
+
+        <p>
+            The <strong>EthernetChannel</strong> models the physical
+            link connecting Ethernet devices. It provides configurable
+            link properties such as data rate, cable length and
+            propagation speed. The propagation delay is calculated
+            from the physical length of the channel and the configured
+            propagation speed. The channel is responsible for
+            propagating transmissions between connected devices.
+        </p>
+
+        <p>
+            The <strong>EthernetNetDevice</strong> provides the
+            ns-3 NetDevice interface and acts as the interface between
+            the ns-3 networking stack and the Ethernet implementation.
+            It manages packet transmission and reception and maintains
+            the required queues and transmission state.
+        </p>
+
+        <p>
+            The <strong>EthernetMac</strong> handles Ethernet frame
+            processing and MAC-level transmission and reception.
+            The implementation models the required transmission
+            states and the Ethernet inter-frame gap. It also handles
+            Ethernet control frames used for flow control.
+        </p>
+
+        <p>
+            The <strong>EthernetPhy</strong> represents the physical
+            layer and coordinates transmission between the MAC and
+            EthernetChannel. Transmission timing is derived from
+            the configured Ethernet link data rate, while the channel
+            provides the propagation behavior.
+        </p>
+
+        <h3 class="overview-heading">
+            Switched Ethernet
+        </h3>
+
+        <p>
+            On top of the Ethernet foundation, the project introduces
+            a modular Ethernet switch. The switch consists of a
+            <strong>Switch</strong> object and multiple
+            <strong>SwitchPort</strong> instances. Each switch port
+            acts as an Ethernet NetDevice connected to an Ethernet
+            link, allowing hosts to communicate through the switch.
+        </p>
+
+        <p>
+            When a frame arrives at a switch port, it is passed to
+            the switch for processing. The switch examines the
+            Ethernet source and destination MAC addresses. Source
+            MAC addresses are learned and associated with the port
+            through which they were received. This allows subsequent
+            frames destined for a known address to be forwarded only
+            through the appropriate switch port.
+        </p>
+
+        <p>
+            If the destination MAC address is not present in the
+            forwarding table, the switch floods the frame to the
+            appropriate ports. This provides the initial behavior
+            required for MAC learning and allows the forwarding table
+            to be populated as traffic flows through the network.
+        </p>
+
+        <h3 class="overview-heading">
+            Packet scheduling
+        </h3>
+
+        <p>
+            The switch uses a scheduler abstraction to separate
+            packet scheduling from the core switching logic. This
+            makes the scheduling mechanism extensible and allows
+            different scheduling policies to be implemented without
+            changing the basic forwarding functionality.
+        </p>
+
+        <p>
+            A <strong>First-Come, First-Served (FCFS)</strong>
+            scheduler has been implemented as an initial scheduling
+            policy. The scheduler tracks transmission state and
+            determines when queued packets can be transmitted through
+            the switch ports. The design also provides a foundation
+            for adding additional scheduling algorithms in the future.
+        </p>
+
+        <h3 class="overview-heading">
+            Ethernet flow control
+        </h3>
+
+        <p>
+            Full-duplex Ethernet flow control is modeled using
+            IEEE 802.3 PAUSE frames. When the receiving side
+            experiences queue pressure, a PAUSE control frame can
+            be generated to request that the transmitting side
+            temporarily stop normal data transmission.
+        </p>
+
+        <p>
+            The implementation therefore models the interaction
+            between receive queues, PAUSE frame generation and
+            transmission pause/resume behavior. This provides a
+            foundation for studying congestion and flow-control
+            behavior in switched Ethernet networks.
+        </p>
+
+        <div class="overview-summary">
+
+            <h3>In summary</h3>
+
+            <p>
+                The project progresses from a basic Ethernet link
+                consisting of an EthernetChannel, EthernetNetDevice,
+                EthernetMac and EthernetPhy to a multi-port switched
+                Ethernet architecture consisting of Switch,
+                SwitchPort, MAC learning and packet scheduling.
+                The resulting design is intended to provide a
+                reusable and extensible foundation for Ethernet
+                network simulations in ns-3.
+            </p>
+
+        </div>
+
+        <!-- Replace # with your actual wiki URL -->
+
+        <a class="wiki-link"
+           href="#"
+           target="_blank">
+            View Project Wiki →
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TIMELINE
+===================================================== -->
+
+<section class="section alternate" id="timeline">
+
+    <div class="container">
+
+        <p class="section-label">02 · TIMELINE</p>
+
+        <h2>
+            Project Timeline
+        </h2>
+
+        <div class="timeline">
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    Community Bonding
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Understanding the architecture
+                    </h3>
+
+                    <p>
+                        Studied the existing ns-3 networking
+                        architecture and discussed the requirements
+                        and design of the Ethernet module.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    Phase 1
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Ethernet foundation
+                    </h3>
+
+                    <p>
+                        Developed the EthernetChannel,
+                        EthernetNetDevice, EthernetMac and
+                        EthernetPhy components and established
+                        full-duplex Ethernet communication.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    Phase 2
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Ethernet switch
+                    </h3>
+
+                    <p>
+                        Implemented the Switch and SwitchPort
+                        architecture and connected multiple
+                        Ethernet links through a switch.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    Phase 3
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        MAC learning and scheduling
+                    </h3>
+
+                    <p>
+                        Added MAC address learning, forwarding
+                        behavior and the scheduler abstraction
+                        with an initial FCFS implementation.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="timeline-item">
+
+                <div class="timeline-date">
+                    Final Phase
+                </div>
+
+                <div class="timeline-content">
+
+                    <h3>
+                        Testing and validation
+                    </h3>
+
+                    <p>
+                        Added and executed tests and examples to
+                        validate Ethernet links, timing, switching,
+                        packet forwarding and end-to-end connectivity.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     MERGE REQUESTS
+===================================================== -->
+
+<section class="section" id="merge-requests">
+
+    <div class="container">
+
+        <p class="section-label">03 · CONTRIBUTIONS</p>
+
+        <h2>
+            Merge Requests
+        </h2>
+
+        <p>
+            The following merge requests contain the major
+            implementation work completed during the project.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Merge Request</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>01</td>
+
+                        <td>
+                            <a href="#" target="_blank">
+                                Ethernet Channel
+                            </a>
+                        </td>
+
+                        <td>
+                            EthernetChannel implementation and
+                            configurable link properties.
+                        </td>
+
+                        <td>
+                            Merged
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>02</td>
+
+                        <td>
+                            <a href="#" target="_blank">
+                                Ethernet NetDevice
+                            </a>
+                        </td>
+
+                        <td>
+                            Ethernet NetDevice with packet
+                            transmission and reception.
+                        </td>
+
+                        <td>
+                            Merged
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>03</td>
+
+                        <td>
+                            <a href="#" target="_blank">
+                                Ethernet MAC and PHY
+                            </a>
+                        </td>
+
+                        <td>
+                            MAC/PHY implementation and Ethernet
+                            transmission timing.
+                        </td>
+
+                        <td>
+                            Merged
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>04</td>
+
+                        <td>
+                            <a href="#" target="_blank">
+                                Switched Ethernet
+                            </a>
+                        </td>
+
+                        <td>
+                            Switch, SwitchPort and frame
+                            forwarding functionality.
+                        </td>
+
+                        <td>
+                            Merged
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>05</td>
+
+                        <td>
+                            <a href="#" target="_blank">
+                                Scheduling
+                            </a>
+                        </td>
+
+                        <td>
+                            Scheduler abstraction and FCFS
+                            scheduling implementation.
+                        </td>
+
+                        <td>
+                            Merged
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p class="table-note">
+            Replace the links and statuses above with the actual
+            merge request URLs and final status.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TESTS AND EXAMPLES
+===================================================== -->
+
+<section class="section alternate" id="tests">
+
+    <div class="container">
+
+        <p class="section-label">04 · VALIDATION</p>
+
+        <h2>
+            Tests & Examples
+        </h2>
+
+        <p>
+            Tests and examples were developed to validate individual
+            Ethernet components as well as complete switched
+            Ethernet communication.
+        </p>
+
+        <div class="test-table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Test / Example</th>
+                        <th>Purpose</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            EthernetFullDuplexTestCase
+                        </td>
+
+                        <td>
+                            Validates simultaneous transmission
+                            and reception over a full-duplex
+                            Ethernet link.
+                        </td>
+
+                        <td>
+                            Completed
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            EthernetInterframeGapTestCase
+                        </td>
+
+                        <td>
+                            Validates Ethernet inter-frame gap
+                            timing.
+                        </td>
+
+                        <td>
+                            Completed
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            EthernetChannelDelayTestCase
+                        </td>
+
+                        <td>
+                            Validates propagation delay based on
+                            channel properties.
+                        </td>
+
+                        <td>
+                            Completed
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Ethernet Link Speed Example
+                        </td>
+
+                        <td>
+                            Validates transmission behavior at
+                            different Ethernet link speeds.
+                        </td>
+
+                        <td>
+                            Completed
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Switched Ethernet Ping Example
+                        </td>
+
+                        <td>
+                            Validates end-to-end connectivity
+                            through the Ethernet switch.
+                        </td>
+
+                        <td>
+                            Completed
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <h3 class="sub-heading">
+            Example topology
+        </h3>
+
+        <p>
+            A basic switched Ethernet topology consists of two
+            hosts connected to separate switch ports. Packets
+            generated by one host are transmitted through its
+            Ethernet link, received by the switch port, processed
+            by the switch and forwarded through the destination
+            port.
+        </p>
+
+        <div class="code-box">
+
+            <pre>
+Host 0
+  |
+  | EthernetChannel
+  |
+Switch Port 0
+  |
+  |-------------------|
+  |  Ethernet Switch  |
+  |-------------------|
+  |
+Switch Port 1
+  |
+  | EthernetChannel
+  |
+Host 1
+            </pre>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FUTURE WORK
+===================================================== -->
+
+<section class="section" id="future">
+
+    <div class="container">
+
+        <p class="section-label">05 · NEXT STEPS</p>
+
+        <h2>
+            Future Work
+        </h2>
+
+        <div class="future-list">
+
+            <div class="future-item">
+
+                <span>01</span>
+
+                <div>
+
+                    <h3>
+                        Additional scheduling algorithms
+                    </h3>
+
+                    <p>
+                        Extend the scheduler framework with
+                        additional policies such as Weighted
+                        Round Robin and other queue scheduling
+                        mechanisms.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="future-item">
+
+                <span>02</span>
+
+                <div>
+
+                    <h3>
+                        Expanded switch validation
+                    </h3>
+
+                    <p>
+                        Add more comprehensive tests covering
+                        larger topologies, multiple flows,
+                        congestion and forwarding behavior.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="future-item">
+
+                <span>03</span>
+
+                <div>
+
+                    <h3>
+                        Performance evaluation
+                    </h3>
+
+                    <p>
+                        Evaluate throughput, latency, queue
+                        behavior and scheduler performance
+                        under different traffic conditions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="future-item">
+
+                <span>04</span>
+
+                <div>
+
+                    <h3>
+                        Further Ethernet features
+                    </h3>
+
+                    <p>
+                        Explore additional Ethernet functionality
+                        that can improve the realism and flexibility
+                        of the model.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ACKNOWLEDGEMENTS
+===================================================== -->
+
+<section class="section alternate" id="acknowledgements">
+
+    <div class="container">
+
+        <p class="section-label">06 · ACKNOWLEDGEMENTS</p>
+
+        <h2>
+            Acknowledgements
+        </h2>
+
+        <p>
+            I would like to thank my mentors for their continuous
+            guidance, technical feedback and support throughout
+            the project.
+        </p>
+
+        <p>
+            I am also grateful to the ns-3 community for providing
+            an open-source environment in which this work could
+            be developed and reviewed.
+        </p>
+
+        <p>
+            Finally, I would like to thank Google Summer of Code
+            for providing the opportunity to contribute to an
+            open-source project and gain experience working on a
+            real-world networking simulation system.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     REFERENCES
+===================================================== -->
+
+<section class="section" id="references">
+
+    <div class="container">
+
+        <p class="section-label">07 · REFERENCES</p>
+
+        <h2>
+            References
+        </h2>
+
+        <ol class="reference-list">
+
+            <li>
+                <a href="https://www.nsnam.org/"
+                   target="_blank">
+                    ns-3 Official Website
+                </a>
+            </li>
+
+            <li>
+                <a href="https://www.nsnam.org/docs/"
+                   target="_blank">
+                    ns-3 Documentation
+                </a>
+            </li>
+
+            <li>
+                <a href="https://www.nsnam.org/docs/models/"
+                   target="_blank">
+                    ns-3 Model Library
+                </a>
+            </li>
+
+            <li>
+                <a href="https://summerofcode.withgoogle.com/"
+                   target="_blank">
+                    Google Summer of Code
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   target="_blank">
+                    Project Wiki
+                </a>
+            </li>
+
+        </ol>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div>
+
+            <strong>
+                GSoC 2026 · Switched Ethernet in ns-3
+            </strong>
+
+            <p>
+                Google Summer of Code 2026
+            </p>
+
+        </div>
+
+        <a href="#top">
+            Back to top ↑
+        </a>
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>
