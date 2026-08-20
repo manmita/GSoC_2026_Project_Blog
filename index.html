@@ -987,16 +987,13 @@
         <p>
 
             On top of the Ethernet foundation, the project introduces
-            a modular Ethernet switch. The switch consists of a
-            <strong>Switch</strong> object and multiple
-            <strong>SwitchPort</strong> instances allowing multiple
-            hosts to communicate through the switch.
-            Supports MAC Address Learning and Forwarding,
-            supports different scheduling policies.
+            a modular Ethernet switch. The Switch object manages multiple
+            Ethernet ports, performs MAC address learning and forwarding,
+            and controls packet movement between ingress and egress ports.
+            The switch also provides a modular scheduling framework for
+            controlling how frames are dequeued and forwarded.
 
         </p>
-
-
 
         <div class="overview-summary">
 
@@ -1006,17 +1003,16 @@
 
             <p>
 
-                The project progresses from a basic Ethernet link
-                consisting of an EthernetChannel, EthernetNetDevice,
-                EthernetMac and EthernetPhy to a multi-port switched
-                Ethernet architecture. The resulting design provides a
-                reusable and extensible foundation for Ethernet network
-                simulations in ns-3.
+                The project progresses from a basic Ethernet link consisting
+                of an EthernetChannel, EthernetNetDevice, EthernetMac and
+                EthernetPhy to a multi-port switched Ethernet architecture.
+                The switch manages frame reception, MAC learning, forwarding,
+                buffering and scheduling, providing a reusable and extensible
+                foundation for Ethernet network simulations in ns-3.
 
             </p>
 
         </div>
-
 
         <a class="wiki-link"
            href="https://www.nsnam.org/wiki/GSOC2026SwitchedEthernet"
@@ -1124,11 +1120,12 @@
                     <p>
 
                         Extended the Ethernet model into a modular switched Ethernet architecture
-                        followed by implementation of the Switch and SwitchPort. Added MAC learning
-                        & lookup, forwarding, along with SwitchHelper and switched Ethernet Ping
+                        with a Switch object managing multiple ports. Added MAC address learning
+                        and lookup, forwarding, along with SwitchHelper and a switched Ethernet Ping
                         example for validation. Implemented a shared switch buffer and modular Switch
-                        Scheduler framework with FCFS scheduling, added tests for switch.
-                        Refactored queue management from EthernetNetDevice to EthernetMac.
+                        Scheduler framework with FCFS scheduling. Added switch tests for learning,
+                        forwarding, queue limits and switch memory backpressure. Refactored queue
+                        management from EthernetNetDevice to EthernetMac.
 
                     </p>
 
@@ -1264,9 +1261,10 @@
                         </td>
 
                         <td>
-                            The Switched Ethernet model along with
-                            SwitchPort, Switch Scheduler and the
-                            FCFS scheduling policy.
+                            The Switched Ethernet model with MAC address
+                            learning and forwarding, shared switch buffering,
+                            a modular Switch Scheduler framework and FCFS
+                            scheduling policy.
                         </td>
 
                         <td>
@@ -1442,10 +1440,35 @@
                         </td>
 
                         <td>
-                            Tests the additional memory limit that
-                            the switch can be given.
+                            Validates forwarding behavior when the output port queue
+                            reaches its configured queue limit.
                         </td>
 
+                    </tr>
+
+                    <tr>
+                        <td>
+                            EthernetSwitchRxBackpressureTestCase
+                        </td>
+                    
+                        <td>
+                            Validates switch memory backpressure by ensuring that a frame
+                            rejected by the switch memory policy remains in the ingress
+                            RX queue for later processing.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            EthernetSwitchFCFSTestCase
+                        </td>
+                    
+                        <td>
+                            Validates first-come, first-served scheduling by ensuring
+                            frames are forwarded in the order they are received and
+                            that frames that cannot be accepted by the output port
+                            are handled according to the FCFS scheduling policy.
+                        </td>
                     </tr>
 
                 </tbody>
@@ -1627,14 +1650,12 @@
                 <div>
 
                     <h3>
-                        Expanded Switch Validation
-                    </h3>
-
-                    <p>
-                        Add more comprehensive tests covering larger
-                        topologies, multiple flows, congestion, VLANs,
-                        redundant links and different forwarding and
-                        scheduling scenarios.
+                        Advanced Switch Memory Models 
+                    </h3> 
+                    
+                    <p> Extend the switch memory model to support shared memory
+                        pools between queues or across the switch, enabling more
+                        realistic buffer allocation and congestion behavior. 
                     </p>
 
                 </div>
