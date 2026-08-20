@@ -315,13 +315,19 @@
         }
 
         .gsoc-link {
-            display: flex;
-            
-            gap: 15px;
-            
+            display: inline-block;
+
             margin-top: 35px;
-            
-            flex-wrap: wrap;
+
+            padding: 12px 20px;
+
+            border: 1px solid #123f73;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #123f73;
             
             }
 
@@ -1005,8 +1011,8 @@
         <p>
 
             On top of the Ethernet foundation, the project introduces
-            a modular Ethernet switch. The Switch object manages multiple
-            Ethernet ports, performs MAC address learning and forwarding,
+            a modular <strong>Ethernet switch</strong>. The Switch has multiple
+            ports, performs MAC address learning and forwarding,
             and controls packet movement between ingress and egress ports.
             The switch also provides a modular scheduling framework for
             controlling how frames are dequeued and forwarded.
