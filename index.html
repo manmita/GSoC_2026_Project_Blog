@@ -967,11 +967,13 @@
 
         <p>
 
-            The <strong>EthernetChannel</strong> models the physical
-            link connecting Ethernet devices. It provides configurable
-            properties such as cable length and propagation speed.
-            The channel is responsible for propagation between connected
-            devices.
+            The <strong>EthernetChannel</strong> models the physical Ethernet link between
+            connected devices. It provides configurable attributes such as
+            cable length and propagation speed, and is responsible for
+            delivering frames between the connected devices with the
+            appropriate propagation delay. The channel is designed for
+            full-duplex Ethernet operation and provides the link-level
+            foundation for communication between Ethernet devices.
 
         </p>
 
@@ -989,7 +991,8 @@
 
             The <strong>EthernetMac</strong> handles Ethernet frame
             processing and MAC-level transmission and reception.
-            Supports Flow Control for Full-duplex.
+            The MAC also implements full-duplex flow control using
+            IEEE 802.3x PAUSE frames.
 
         </p>
 
@@ -998,7 +1001,8 @@
 
             The <strong>EthernetPhy</strong> represents the physical
             layer and coordinates transmission between the MAC and
-            EthernetChannel.
+            EthernetChannel, applying the configured link rate and
+            inter-frame gap during transmission.
 
         </p>
 
