@@ -1405,21 +1405,6 @@
                     <tr>
 
                         <td>
-                            EthernetChannelDelayTestCase
-                        </td>
-
-                        <td>
-                            Validates propagation delay based on
-                            the configured Ethernet channel
-                            length and propagation speed.
-                        </td>
-
-                    </tr>
-
-
-                    <tr>
-
-                        <td>
                             EthernetLinkSpeedTestCase
                         </td>
 
@@ -1471,6 +1456,17 @@
                             reaches its configured queue limit.
                         </td>
 
+                    </tr>
+
+                    <tr>
+                        <td>
+                            EthernetSwitchMemoryCheckTestCase
+                        </td>
+                        <td>
+                            Validates that the switch-level memory limit prevents frames
+                            from being forwarded when sufficient switch memory is unavailable,
+                            even when output port queues have space.
+                        </td>
                     </tr>
 
                     <tr>
