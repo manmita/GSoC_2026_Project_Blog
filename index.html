@@ -942,30 +942,49 @@
             Project Overview
         </h2>
 
+<!-- =====================================================
+     OVERVIEW
+===================================================== -->
+
+<section class="section" id="overview">
+
+    <div class="container">
+
+        <p class="section-label">
+            01 · OVERVIEW
+        </p>
+
+        <h2>
+            Project Overview
+        </h2>
 
         <p>
 
-            The goal of this Google Summer of Code project is to
-            develop a modular Switched Ethernet model capable of
-            simulating 1, 10, and 40 GbE links, with MAC-based
-            auto-learning of I/O ports, support for pluggable
-            scheduling algorithms. Introduce enhanced EthernetNetDevice
-            model with point-to-point–like NetDevice abstraction for
-            switched Ethernet, an EthernetChannel capable of simulating
-            full-duplex mode of operation responsible for modeling
-            transmission delay and errors.
+            ns-3 has long supported Ethernet-based communication,
+            however, it has not previously provided a dedicated
+            <strong>Switched Ethernet model</strong>. This project
+            introduces a modular Ethernet foundation and extends it
+            into a multi-port switched Ethernet architecture with
+            MAC learning, forwarding, buffering, and pluggable scheduling.
 
         </p>
 
+        <h3 class="overview-heading">
+            Why a Dedicated Ethernet Model?
+        </h3>
 
         <p>
 
-            The Ethernet implementation is organized into separate
-            components for the channel, NetDevice, MAC and PHY
-            layers. This separation allows the individual parts of
-            the Ethernet stack to be developed, tested and extended
-            independently while keeping their interactions close to
-            the behavior of real Ethernet devices.
+            The existing <strong>CSMA</strong> model in ns-3 is designed
+            around a shared-medium communication model. It is well suited
+            for networks where multiple devices contend for access to a
+            common channel. Switched Ethernet follows a different
+            architecture, with independent full-duplex links connecting 
+            devices to a multi-port switch. Frames are forwarded based on 
+            destination MAC addresses, while the switch manages buffering 
+            and scheduling at its ports. A dedicated Switched Ethernet model 
+            provides these concepts explicitly, enabling a more direct 
+            representation of modern Ethernet networks.
 
         </p>
 
@@ -974,44 +993,55 @@
             Ethernet Foundation
         </h3>
 
-
         <p>
 
-            The <strong>EthernetChannel</strong> models the physical Ethernet link between
-            connected devices. It is responsible for
-            delivering frames between the connected devices with the
-            appropriate propagation delay. The channel is designed for
-            full-duplex Ethernet operation and provides the link-level
-            foundation for communication between Ethernet devices.
+            The Ethernet implementation is divided into separate
+            <strong>EthernetChannel</strong>,
+            <strong>EthernetNetDevice</strong>,
+            <strong>EthernetMac</strong> and
+            <strong>EthernetPhy</strong> components. This separation
+            allows the individual layers to be developed and extended
+            independently while maintaining clear interfaces between
+            the networking stack, Ethernet MAC, physical layer and link.
 
         </p>
 
+        <p>
+
+            The <strong>EthernetChannel</strong> represents the physical
+            Ethernet link between devices. It models the propagation
+            characteristics of the link and is responsible for delivering
+            frames between connected devices with the configured
+            propagation delay. The channel supports full-duplex Ethernet
+            operation.
+
+        </p>
 
         <p>
 
             The <strong>EthernetNetDevice</strong> provides the ns-3
-            NetDevice interface and acts as the interface between the
-            ns-3 networking stack and the Ethernet implementation.
+            <code>NetDevice</code> abstraction and connects the higher
+            networking stack with the Ethernet implementation. It
+            provides the interface through which Ethernet devices can
+            participate in an ns-3 network.
 
         </p>
-
 
         <p>
 
             The <strong>EthernetMac</strong> handles Ethernet frame
-            processing and MAC-level transmission and reception.
-            The MAC also implements full-duplex flow control using
-            IEEE 802.3x PAUSE frames.
+            processing and MAC-level transmission and reception. It also
+            provides Ethernet-specific functionality such as IEEE 802.3x
+            PAUSE-based full-duplex flow control and MAC control frames.
 
         </p>
-
 
         <p>
 
             The <strong>EthernetPhy</strong> represents the physical
-            layer and coordinates transmission between the MAC and
-            EthernetChannel, applying the configured link rate and
-            inter-frame gap during transmission.
+            layer between the MAC and EthernetChannel. It applies the
+            configured link rate and models transmission timing,
+            including the Ethernet inter-frame gap.
 
         </p>
 
@@ -1020,17 +1050,27 @@
             Switched Ethernet
         </h3>
 
+        <p>
+
+            On top of this Ethernet foundation, the project introduces
+            a modular <strong>Ethernet switch</strong>. A switch consists
+            of multiple ports and learns the location of
+            connected devices from their source MAC addresses. Based on
+            the learned forwarding information, frames can be delivered
+            to the appropriate output port or flooded when the destination
+            is unknown.
+
+        </p>
 
         <p>
 
-            On top of the Ethernet foundation, the project introduces
-            a modular <strong>Ethernet switch</strong>. The Switch has multiple
-            ports, performs MAC address learning and forwarding,
-            and controls packet movement between ingress and egress ports.
-            The switch also provides a modular scheduling framework for
-            controlling how frames are dequeued and forwarded.
+            The switch architecture also introduces explicit buffering
+            and a scheduler abstraction, allowing different packet
+            scheduling policies to be implemented without changing the
+            core forwarding logic.
 
         </p>
+
 
         <div class="overview-summary">
 
@@ -1040,12 +1080,13 @@
 
             <p>
 
-                The project progresses from a basic Ethernet link consisting
-                of an EthernetChannel, EthernetNetDevice, EthernetMac and
-                EthernetPhy to a multi-port switched Ethernet architecture.
-                The switch manages frame reception, MAC learning, forwarding,
-                buffering and scheduling, providing a reusable and extensible
-                foundation for Ethernet network simulations in ns-3.
+                The project progresses from a reusable full-duplex
+                Ethernet link model to a multi-port switched Ethernet
+                architecture. It provides the foundations required to
+                model Ethernet devices, switch forwarding, MAC learning,
+                buffering, backpressure and scheduling, while keeping
+                the design modular enough to support future Ethernet
+                extensions.
 
             </p>
 
@@ -1059,17 +1100,193 @@
             View Project Wiki →
 
         </a>
+
         <a class="gsoc-link"
-            href="https://summerofcode.withgoogle.com/programs/2026/projects/Wl61Gzov"
-            target="_blank" 
-            rel="noopener noreferrer">
-            View GSoC Page → 
+           href="https://summerofcode.withgoogle.com/programs/2026/projects/Wl61Gzov"
+           target="_blank"
+           rel="noopener noreferrer">
+
+            View GSoC Page →
+
         </a>
 
     </div>
 
 </section>
 
+
+<!-- =====================================================
+     IMPLEMENTATION
+===================================================== -->
+
+<section class="section alternate" id="implementation">
+
+    <div class="container">
+
+        <p class="section-label">
+            02 · IMPLEMENTATION
+        </p>
+
+        <h2>
+            Implementation
+        </h2>
+
+        <p>
+
+        The implementation was developed incrementally,
+            beginning with the core Ethernet link and then 
+            extending it into a multi-port switch architecture. 
+            Each component has a clearly defined responsibility, 
+            keeping the overall design modular
+
+        </p>
+
+        <!-- Flow Control -->
+
+        <div class="implementation-item">
+
+            <h3>
+                Ethernet Flow Control
+            </h3>
+
+            <p>
+
+                Implemented full-duplex Ethernet flow control using
+                <strong>IEEE 802.3x PAUSE frames</strong>. The MAC
+                processes PAUSE control frames and temporarily stops
+                transmission when requested, resuming transmission after
+                the configured pause interval. MAC control frame
+                handling was also added to provide the foundation for
+                Ethernet-specific control operations.
+
+            </p>
+
+        </div>
+
+
+        <!-- Queue Management -->
+
+        <div class="implementation-item">
+
+            <h3>
+                Tx/Rx Queue Management
+            </h3>
+
+            <p>
+
+                The Ethernet MAC manages the
+                <strong>transmit (Tx) and receive (Rx) queues</strong>
+                associated with frame transmission and reception. The
+                Tx queue holds packets waiting to be transmitted, while
+                the Rx queue stores packets received from the PHY before
+                they are delivered to the higher layers or processed by
+                the device.
+
+            </p>
+
+            <p>
+
+                The receive path uses <strong>RxIndication()</strong> to
+                signal that a packet is available in the Rx queue. This
+                separates packet reception from delivery to the ns-3
+                networking stack and allows devices such as switch ports
+                to determine how received packets should be handled.
+
+            </p>
+
+        </div>
+
+
+        <!-- Switch -->
+
+        <div class="implementation-item">
+
+            <h3>
+                Ethernet Switch
+            </h3>
+
+            <p>
+
+                Extended the Ethernet foundation with a multi-port
+                switch architecture. The switch manages multiple
+                Ethernet ports and implements <strong>MAC address
+                learning, forwarding and flooding</strong>. Source MAC
+                addresses are learned from incoming frames, allowing
+                subsequent frames to be forwarded directly to the
+                appropriate output port.
+
+            </p>
+
+            <p>
+
+                The switch maintains buffering for frames waiting for
+                an output port. When an output port cannot currently
+                accept a frame, the frame remains in the switch buffer
+                and can be transmitted when the port becomes available.
+                This provides <strong>backpressure</strong> from the
+                output side and allows queue and memory limits to
+                influence packet forwarding.
+
+            </p>
+
+        </div>
+
+
+        <!-- Scheduler -->
+
+        <div class="implementation-item">
+
+            <h3>
+                Scheduler Framework
+            </h3>
+
+            <p>
+
+                Introduced a modular <strong>Ethernet switch scheduler
+                framework</strong> to determine the order in which
+                buffered frames are selected for transmission. The
+                forwarding logic is kept independent of the scheduling
+                policy, allowing different algorithms to be introduced
+                without modifying the core switch forwarding mechanism.
+
+            </p>
+
+            <p>
+
+                The initial implementation includes an
+                <strong>FCFS (First-Come, First-Served)</strong>
+                scheduler, providing a simple baseline for validating
+                the scheduler interface and switch operation. The
+                framework can be extended with additional scheduling
+                policies as the switch model evolves.
+
+            </p>
+
+        </div>
+
+        <!-- Helper & Configuration -->
+
+        <div class="implementation-item">
+        
+            <h3>
+                Helpers & Configuration
+            </h3>
+        
+            <p>
+        
+                Added helper classes to simplify the creation and configuration
+                of Ethernet devices, channels, and switched Ethernet topologies.
+                The helpers provide a higher-level interface for configuring the
+                underlying components, making it easier to construct Ethernet
+                networks and experiment with different configurations.
+        
+            </p>
+        
+        </div>
+
+    </div>
+    
+</section>
 
 
 <!-- =====================================================
@@ -1193,7 +1410,6 @@
 </section>
 
 
-
 <!-- =====================================================
      MERGE REQUESTS
 ===================================================== -->
@@ -1259,8 +1475,8 @@
                         <td>
                             The Ethernet foundation including
                             EthernetChannel, EthernetNetDevice,
-                            EthernetPHY and EthernetMAC, along
-                            with related unit tests and examples.
+                            EthernetPHY, EthernetMAC and EthernetHelper
+                            along with related unit tests and examples.
                         </td>
 
                         <td>
